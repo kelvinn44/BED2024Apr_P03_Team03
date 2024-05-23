@@ -1,0 +1,25 @@
+{
+  "name": "bed2024apr_p03_team03",
+  "version": "1.0.0",
+  "description": "BED Assignment",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kelvinn44/BED2024Apr_P03_Team03.git"
+  },
+  "author": "Tan Guo Zhi Kelvin, Anne Marie Sim, Natalie Wong Yuxin, Aaron Lua Siang Kian",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kelvinn44/BED2024Apr_P03_Team03/issues"
+  },
+  "homepage": "https://github.com/kelvinn44/BED2024Apr_P03_Team03#readme",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.19.2",
+    "joi": "^17.13.1",
+    "mssql": "^10.0.2"
+  }
+}
