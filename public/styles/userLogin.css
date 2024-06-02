@@ -1,0 +1,53 @@
+/* TODO: Fix footer floating */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.custom-navbar {
+    background-color: lightblue;
+}
+
+.navbar-brand img {
+    width: 150px;
+    height: auto;
+}
+
+.navbar-nav .nav-item .nav-link {
+    font-size: 18px;
+}
+
+.login-form {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+.login-form h2 {
+    margin-bottom: 20px;
+}
+.form-group label {
+    font-weight: bold;
+}
+.form-control {
+    border-radius: 5px;
+}
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 16px;
+}
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+.text-center a {
+    color: #007bff;
+}
+.text-center a:hover {
+    text-decoration: underline;
+}

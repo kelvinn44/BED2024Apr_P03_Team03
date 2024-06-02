@@ -1,0 +1,28 @@
+/* TODO: fix floting footer */
+.custom-navbar {
+    background-color: lightblue;
+}
+
+.navbar-brand img {
+    width: 150px;
+    height: auto;
+}
+
+.navbar-nav .nav-item .nav-link {
+    font-size: 18px;
+}
+
+.account-details {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+.account-details h2 {
+    margin-bottom: 20px;
+}
+.account-details p {
+    margin: 5px 0;
+}
