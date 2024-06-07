@@ -1,0 +1,49 @@
+.custom-navbar {
+    background-color: lightblue;
+}
+
+.navbar-brand img {
+    width: 150px;
+    height: auto;
+}
+
+.navbar-nav .nav-item .nav-link {
+    font-size: 18px;
+}
+
+nav a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: black;
+}
+
+
+.container {
+    width: 60%;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+}
+.section {
+    margin: 20px 0;
+}
+.section img {
+    width: 100%;
+    height: auto;
+    max-height: 300px;
+    background-color: #ccc;
+    margin-bottom: 10px;
+}
+.section p {
+    margin: 10px 0;
+}
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #1F262D;
+    margin-top: 20px;
+    color: white;
+}
