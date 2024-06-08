@@ -1,0 +1,78 @@
+.custom-navbar {
+    background-color: lightblue;
+}
+
+.navbar-brand img {
+    width: 150px;
+    height: auto;
+}
+
+.navbar-nav .nav-item .nav-link {
+    font-size: 18px;
+}
+
+.donationtype {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.donation-options {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+}
+
+.donation-button {
+    padding: 10px 50px;
+    font-size: 25px;
+    background-color: lightblue;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#amt {
+    width: 30%;
+    padding: 5px;
+    margin: 1px;
+    margin-bottom: 30px;
+    border-radius: 5px;
+}
+
+.confirm-otd-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+
+}
+
+#confirm-otd {
+    /*margin-top: 20px;*/
+    padding: 15px 50px;
+    font-size: 20px;
+    border-radius: 10px;
+    background-color: lightblue;
+    color: rgb(0, 0, 0);
+    border: none;
+    cursor: pointer;
+
+}
+
+#amt-monthly {
+    width: 30%;
+    padding: 5px;
+    margin: 5px;
+    margin-bottom: 30px;
+    border-radius: 5px;
+}
+
+#confirm-monthly {
+    padding: 5px 10px;
+    border-radius: 10px;
+    margin-left: 5px;
+    background-color: lightblue;
+    color: rgb(0, 0, 0);
+    border: none;
+    cursor: pointer;
+}
