@@ -6,7 +6,8 @@ USE BED_Assignment_DB;
 
 CREATE TABLE Account (
     account_id INT IDENTITY(1,1) PRIMARY KEY,
-    name VARCHAR(50) NOT NULL,
+    firstname VARCHAR(50) NOT NULL,
+    lastname VARCHAR(50) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     phone_number VARCHAR(30) NOT NULL UNIQUE,
     password VARCHAR(20) NULL,
@@ -54,28 +55,40 @@ CREATE TABLE Forum (
 )
 
 -- Sample data
-INSERT INTO Account (name, email, phone_number, password, recurring_donation_amount)
-VALUES ('John Doe', 'john@email.com', '98887888', 'Pass@123', 10.00);
-
-INSERT INTO Account (name, email, phone_number, password, role)
+-- user account with recurring donation:
+INSERT INTO Account (firstname, lastname, email, phone_number, password, recurring_donation_amount)
 VALUES 
-    ('Admin1', 'admin1@willinghearts.com', '91234567', 'AdminPass@123', 'EventAdmin'),
-    ('Admin2', 'admin2@willinghearts.com', '67891234', 'PassAdmin@8888', 'ForumMod');
+    ('John', 'Doe', 'john@email.com', '98887888', 'Pass@123', 10.00);
+
+-- user account with no recurring donation:
+INSERT INTO Account (firstname, lastname, email, phone_number, password)
+VALUES 
+    ('Mary', 'Lim', 'mary@email.com', '12345678', 'Abc$321');
+
+-- admin accounts
+INSERT INTO Account (firstname, lastname, email, phone_number, password, role)
+VALUES 
+    ('Admin1', '.', 'admin1@willinghearts.com', '91234567', 'AdminPass@123', 'EventAdmin'),
+    ('Admin2', '.', 'admin2@willinghearts.com', '67891234', 'PassAdmin@8888', 'ForumMod');
 
 INSERT INTO Event (account_id, name, description, event_date, location)
-VALUES (2, 'Food Drive', 'Collecting food for the needy.', '2024-08-12 10:00:00', 'Community Center');
+VALUES (3, 'Food Drive', 'Collecting food for the needy.', '2024-08-12 10:00:00', 'Community Center');
 
 -- Example event sign-ups
--- User John Doe signing up
+-- user John Doe signing up for event
 INSERT INTO EventSignUp (event_id, account_id)
 VALUES (1, 1);
 
--- Guest signing up
+-- Guest signing up for event
 INSERT INTO EventSignUp (event_id, name, email, phone_number)
 VALUES (1, 'Jane Smith', 'jane@example.com', '99998888');
 
+-- Example donations
+-- user John Doe donated $50
 INSERT INTO Donation (account_id, amount)
 VALUES (1, 50.00);
 
 INSERT INTO Forum (account_id, title, content)
-VALUES (1, 'Community service 1 advice', 'Hi, here are my tips for Community service 1: <ul><li>Be kind</li><li>Have fun</li><li>Make new friends</li></ul>');
+VALUES 
+    (1, 'Community service 1 advice', 'Hi, here are my tips for Community service 1: <ul><li>Be kind</li><li>Have fun</li><li>Make new friends</li></ul>');
+    (2, 'Community service 2 advice', 'In a dilemma of picking your type of community service? Here''s some helpful advice I can give! <ul><li>Think about what volunteering can offer you </li><li>Know what you have to offer an organization</li><li>Decide how much time you can offer towards volunteering</li></ul>');

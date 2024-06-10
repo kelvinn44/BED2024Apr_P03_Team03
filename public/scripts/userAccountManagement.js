@@ -17,13 +17,13 @@ document.getElementById("navbar-links").innerHTML = `
         <a class="nav-link font-weight-bold" href="userAccountManagement.html">${user.name}</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Donate</a>
+        <a class="nav-link" href="donation.html">Donate</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="#">Events</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Forum</a>
+        <a class="nav-link" href="forum.html">Forum</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="aboutUs.html">About Us</a>

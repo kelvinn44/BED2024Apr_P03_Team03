@@ -3,6 +3,7 @@ const dbConfig = require('../dbConfig');
 // const bcrypt = require('bcrypt');
 // const jwt = require('jsonwebtoken');
 
+//TODO: update the Account class "name" to firstname, lastname to match the database
 class Account {
     constructor(account_id, name, email, phone_number, password, role) {
       this.account_id = account_id;
