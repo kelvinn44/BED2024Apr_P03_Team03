@@ -1,0 +1,120 @@
+.custom-navbar {
+    background-color: lightblue;
+}
+
+.navbar-brand img {
+    width: 150px;
+    height: auto;
+}
+
+.navbar-nav .nav-item .nav-link {
+    font-size: 18px;
+}
+
+.donationtype {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.donation-options {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+}
+
+.donation-button {
+    padding: 10px 50px;
+    font-size: 25px;
+    background-color: lightblue;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#amt {
+    width: 30%;
+    padding: 5px;
+    margin: 1px;
+    margin-bottom: 30px;
+    border-radius: 5px;
+}
+
+.confirm-otd-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+
+}
+
+#confirm-otd {
+    /*margin-top: 20px;*/
+    padding: 15px 50px;
+    font-size: 20px;
+    border-radius: 10px;
+    background-color: lightblue;
+    color: rgb(0, 0, 0);
+    border: none;
+    cursor: pointer;
+
+}
+
+#amt-monthly {
+    width: 30%;
+    padding: 5px;
+    margin: 5px;
+    margin-bottom: 30px;
+    border-radius: 5px;
+}
+
+#confirm-monthly {
+    padding: 5px 10px;
+    border-radius: 10px;
+    margin-left: 5px;
+    background-color: lightblue;
+    color: rgb(0, 0, 0);
+    border: none;
+    cursor: pointer;
+}
+
+.popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* The popup content */
+.popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 300px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* The "Okay" button */
+.popup-button {
+    background-color: lightblue;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.popup-button:hover {
+    background-color: #218838;
+}
+
+
+
