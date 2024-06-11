@@ -32,6 +32,14 @@
     cursor: pointer;
 }
 
+.donation-button:hover {
+    background-color: #007bff;
+}
+
+.donation-button.selected {
+    background-color: #0056b3;
+}
+
 #amt {
     width: 30%;
     padding: 5px;
@@ -75,4 +83,59 @@
     color: rgb(0, 0, 0);
     border: none;
     cursor: pointer;
+}
+
+#donation-list {
+    text-decoration: underline;
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+#popup-close {
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    background-color: lightblue;
+    color: black;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+#popup-close:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+#popup-monthly-close {
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    background-color: lightblue;
+    color: black;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+#popup-monthly-close:hover {
+    background-color: #007bff;
+    color: white;
 }

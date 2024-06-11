@@ -32,6 +32,14 @@
     cursor: pointer;
 }
 
+.donation-button:hover {
+    background-color: #007bff;
+}
+
+.donation-button.selected {
+    background-color: #0056b3;
+}
+
 #amt {
     width: 30%;
     padding: 5px;
@@ -77,6 +85,10 @@
     cursor: pointer;
 }
 
+#donation-list {
+    text-decoration: underline;
+}
+
 .popup-overlay {
     display: none;
     position: fixed;
@@ -102,19 +114,21 @@
 
 /* The "Okay" button */
 .popup-button {
-    background-color: lightblue;
-    color: white;
-    border: none;
-    padding: 10px 20px;
     margin-top: 10px;
-    border-radius: 5px;
+    padding: 10px 20px;
+    border: none;
+    background-color: lightblue;
+    color: black;
     cursor: pointer;
-    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
 }
 
 .popup-button:hover {
-    background-color: #218838;
+    background-color: #007bff;
+    color: white;
 }
+
 
 
 

@@ -51,10 +51,10 @@
         <br>
         <p class="donationtype">One-time donation</p>
         <div class="donation-options">
-            <button class="donation-button">$20</button>
-            <button class="donation-button">$30</button>
-            <button class="donation-button">$50</button>
-            <button class="donation-button">$100</button>
+            <button class="donation-button" data-amount="20">$20</button>
+            <button class="donation-button" data-amount="30">$30</button>
+            <button class="donation-button" data-amount="50">$50</button>
+            <button class="donation-button" data-amount="100">$100</button>
         </div>
         <p id="amttd">Enter other amount:</p>
         <input type="text" id="amt" placeholder="Enter amount here">
@@ -63,11 +63,11 @@
         </div>
         <br>
         <p class="donationtype">Monthly reccurring donation</p>
-        <form id="monthly-donation">
+        <div id="monthly-donation">
             <label>Enter amount:</label>
             <input type="text" id="amt-monthly" placeholder="Enter amount here">
             <button id="confirm-monthly" onclick="signInPopup()">Confirm</button>
-        </form>
+        </div>
         <br>
         <p class="donationtype">Latest donations</p>
         <ol id="donation-list">
@@ -84,5 +84,10 @@
             <button class="popup-button" onclick="hidePopup()">Okay</button>
         </div>
     </div>
+    <footer style="background-color: #1F262D;">
+        <div class="text-center py-3">
+          <p style="margin: 0; color: white;">&copy; 2024 Willing Hearts | Contact us: <a href="mailto:contact@willinghearts.org" style="color: white;">contact@bmazon.com</a> | Call: <a href="tel:+65 8888 9999" style="color: white;">+65 8888 9999</a></p>
+        </div>
+    </footer>
 </body>
 </html>
