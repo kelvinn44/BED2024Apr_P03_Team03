@@ -1,0 +1,81 @@
+.custom-navbar {
+    background-color: lightblue;
+}
+
+.navbar-brand img {
+    width: 150px;
+    height: auto;
+}
+
+.navbar-nav .nav-item .nav-link {
+    font-size: 18px;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+.container {
+    width: 80%;
+    margin: 20px auto;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.event-box {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 5px;
+    background-color: #fafafa;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: calc(33% - 20px); /* Adjust width as needed */
+    height: 250px; /* Fixed height for square shape */
+    box-sizing: border-box;
+}
+.event-title {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #333;
+    text-align: center;
+}
+.event-date, .event-time, .event-location {
+    font-size: 0.9em;
+    color: #777;
+    text-align: center;
+}
+.event-description {
+    margin-top: 10px;
+    font-size: 1em;
+    color: #555;
+    text-align: center;
+}
+.sign-up-button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    font-size: 1em;
+    color: #fff;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+.sign-up-button:hover {
+    background-color: #0056b3;
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #1F262D;
+    margin-top: 20px;
+    color: white;
+}
