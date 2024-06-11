@@ -14,16 +14,13 @@ const staticMiddleware = express.static("public"); // Path to the public folder
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true })); // For form data handling
 
-//bootstrap
-app.use("/",express.static("./node_modules/bootstrap/dist/"));
-
 app.use(staticMiddleware); // Mount the static middleware
 
-// routes
-// Route to get user details
+// Routes
+// route to get user details:
 app.get('/user/:id', accountController.getUser);
 
-// Route to handle user login
+// route to handle user login:
 app.post('/login', accountController.loginUser);
 
 app.listen(port, async () => {

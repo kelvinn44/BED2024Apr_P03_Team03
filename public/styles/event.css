@@ -1,3 +1,4 @@
+/* nav bar css */
 .custom-navbar {
     background-color: lightblue;
 }
@@ -11,12 +12,13 @@
     font-size: 18px;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    margin: 0;
-    padding: 0;
+nav a {
+    margin: 0 8px;
+    text-decoration: none;
+    color: black;
 }
+
+/* event info css */
 .container {
     width: 80%;
     margin: 20px auto;
@@ -72,10 +74,20 @@ body {
     background-color: #0056b3;
 }
 
-footer {
-    text-align: center;
-    padding: 10px;
+/* footer css */
+.footer-custom {
     background-color: #1F262D;
-    margin-top: 20px;
+}
+
+.footer-custom p {
+    margin: 0;
     color: white;
+}
+
+.footer-custom a {
+    color: white;
+}
+
+.footer-custom a:hover {
+    color: #e8ad28; /* hover effect */
 }

@@ -1,4 +1,4 @@
-/* TODO: fix floting footer */
+/* nav bar css */
 .custom-navbar {
     background-color: lightblue;
 }
@@ -12,6 +12,13 @@
     font-size: 18px;
 }
 
+nav a {
+    margin: 0 8px;
+    text-decoration: none;
+    color: black;
+}
+
+/* account details css */
 .account-details {
     max-width: 600px;
     margin: 50px auto;
@@ -25,4 +32,22 @@
 }
 .account-details p {
     margin: 5px 0;
+}
+
+/* footer css */
+.footer-custom {
+    background-color: #1F262D;
+}
+
+.footer-custom p {
+    margin: 0;
+    color: white;
+}
+
+.footer-custom a {
+    color: white;
+}
+
+.footer-custom a:hover {
+    color: #e8ad28; /* hover effect */
 }

@@ -1,3 +1,4 @@
+/* nav bar css */
 .custom-navbar {
     background-color: lightblue;
 }
@@ -12,10 +13,12 @@
 }
 
 nav a {
-    margin: 0 10px;
+    margin: 0 8px;
     text-decoration: none;
     color: black;
 }
+
+/* forum info css */
 .container {
     width: 60%;
     margin: 20px auto;
@@ -60,4 +63,22 @@ footer {
 }
 .form-container button:hover {
     background-color: #bbb;
+}
+
+/* footer css */
+.footer-custom {
+    background-color: #1F262D;
+}
+
+.footer-custom p {
+    margin: 0;
+    color: white;
+}
+
+.footer-custom a {
+    color: white;
+}
+
+.footer-custom a:hover {
+    color: #e8ad28; /* hover effect */
 }

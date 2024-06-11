@@ -3,11 +3,11 @@ const dbConfig = require('../dbConfig');
 // const bcrypt = require('bcrypt');
 // const jwt = require('jsonwebtoken');
 
-//TODO: update the Account class "name" to firstname, lastname to match the database
 class Account {
-    constructor(account_id, name, email, phone_number, password, role) {
+    constructor(account_id, firstname, lastname, email, phone_number, password, role) {
       this.account_id = account_id;
-      this.name = name;
+      this.firstname = firstname;
+      this.lastname = lastname;
       this.email = email;
       this.phone_number = phone_number;
       this.password = password;
@@ -24,7 +24,7 @@ class Account {
         
         if (result.recordset.length > 0) {
           const user = result.recordset[0];
-          return new Account(user.account_id, user.name, user.email, user.phone_number, user.password, user.role);
+          return new Account(user.account_id, user.firstname, user.lastname, user.email, user.phone_number, user.password, user.role);
         } else {
           return null;
         }
@@ -43,7 +43,7 @@ class Account {
         
         if (result.recordset.length > 0) {
           const user = result.recordset[0];
-          return new Account(user.account_id, user.name, user.email, user.phone_number, user.password, user.role);
+          return new Account(user.account_id, user.firstname, user.lastname, user.email, user.phone_number, user.password, user.role);
         } else {
           return null;
         }

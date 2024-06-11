@@ -1,10 +1,3 @@
-/* TODO: Fix footer floating */
-body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
 .custom-navbar {
     background-color: lightblue;
 }
@@ -16,6 +9,12 @@ body {
 
 .navbar-nav .nav-item .nav-link {
     font-size: 18px;
+}
+
+nav a {
+    margin: 0 8px;
+    text-decoration: none;
+    color: black;
 }
 
 .login-form {
@@ -50,4 +49,22 @@ body {
 }
 .text-center a:hover {
     text-decoration: underline;
+}
+
+/* footer css */
+.footer-custom {
+    background-color: #1F262D;
+}
+
+.footer-custom p {
+    margin: 0;
+    color: white;
+}
+
+.footer-custom a {
+    color: white;
+}
+
+.footer-custom a:hover {
+    color: #e8ad28; /* hover effect */
 }

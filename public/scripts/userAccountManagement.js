@@ -5,7 +5,8 @@ if (!user) {
 }
 
 // Populate user details
-document.getElementById("user-name").textContent = user.name;
+document.getElementById("user-firstname").textContent = user.firstname;
+document.getElementById("user-lastname").textContent = user.lastname;
 document.getElementById("user-email").textContent = user.email;
 document.getElementById("user-phone").textContent = user.phone_number;
 document.getElementById("user-password").textContent = user.password;
@@ -14,13 +15,13 @@ document.getElementById("user-password").textContent = user.password;
 // Populate the navbar with the user's name
 document.getElementById("navbar-links").innerHTML = `
     <li class="nav-item">
-        <a class="nav-link font-weight-bold" href="userAccountManagement.html">${user.name}</a>
+        <a class="nav-link active" aria-current="page" href="userAccountManagement.html">${user.firstname}</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="donation.html">Donate</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Events</a>
+        <a class="nav-link" href="event.html">Events</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="forum.html">Forum</a>
@@ -33,7 +34,7 @@ document.getElementById("navbar-links").innerHTML = `
     </li>
 `;
 
-// Fetch donations and events
+// Fetch donations and events - Not done
 fetch(`/user/${user.account_id}/donations`)
     .then((response) => response.json())
     .then((data) => {

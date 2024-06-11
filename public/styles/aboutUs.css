@@ -1,3 +1,4 @@
+/* nav bar css */
 .custom-navbar {
     background-color: lightblue;
 }
@@ -12,38 +13,35 @@
 }
 
 nav a {
-    margin: 0 10px;
+    margin: 0 8px;
     text-decoration: none;
     color: black;
 }
 
+/* about us content css */
+.rounded-circle {
+    border: 3px solid #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
-.container {
-    width: 60%;
-    margin: 20px auto;
-    background-color: #fff;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    text-align: center;
+.small-rect {
+    max-width: 400px;
 }
-.section {
-    margin: 20px 0;
-}
-.section img {
-    width: 100%;
-    height: auto;
-    max-height: 300px;
-    background-color: #ccc;
-    margin-bottom: 10px;
-}
-.section p {
-    margin: 10px 0;
-}
-footer {
-    text-align: center;
-    padding: 10px;
+
+/* footer css */
+.footer-custom {
     background-color: #1F262D;
-    margin-top: 20px;
+}
+
+.footer-custom p {
+    margin: 0;
     color: white;
+}
+
+.footer-custom a {
+    color: white;
+}
+
+.footer-custom a:hover {
+    color: #e8ad28; /* hover effect */
 }

@@ -1,10 +1,12 @@
--- Database script (run first)
+-- Database Script
+-- NOTE: Run each step separately in SQL Server Management Studio (SSMS) to avoid errors.
+-- Step 1: Create the database
 CREATE DATABASE BED_Assignment_DB;
 
--- Use after creating the database (run second)
+-- Step 2: Switch to the newly created database
 USE BED_Assignment_DB;
 
--- After changing to BED_Assignment_DB database, run the following (run third):
+-- Step 3: Create the necessary tables after changing to BED_Assignment_DB database
 -- Table creation
 CREATE TABLE Account (
     account_id INT IDENTITY(1,1) PRIMARY KEY,
@@ -57,7 +59,7 @@ CREATE TABLE Forum (
     FOREIGN KEY (account_id) REFERENCES Account(account_id)
 );
 
--- Run after creating tables (run fourth):
+-- Step 4: Insert sample data into the Account table
 -- Sample data
 -- user account with recurring donation:
 INSERT INTO Account (firstname, lastname, email, phone_number, password, recurring_donation_amount)
@@ -85,7 +87,7 @@ VALUES
     ('EventAdmin2', '.', 'EventAdmin2@willinghearts.com', '87769000', 'Password@8888', 'EventAdmin'),
     ('ForumMod2', '.', 'ForumMod2@willinghearts.com', '88887777', 'Mod@Super123', 'ForumMod');
 
--- run after creating accounts (run fifth):
+-- Step 5: Insert the following sample data after creating the accounts
 -- event examples:
 INSERT INTO Event (account_id, event_title, description, event_date, location)
 VALUES 
