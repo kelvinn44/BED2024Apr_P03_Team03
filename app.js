@@ -4,6 +4,7 @@ const sql = require("mssql");
 const dbConfig = require("./dbConfig");
 const bodyParser = require("body-parser");
 const accountController = require('./controllers/accountController');
+const eventsController = require("./controllers/eventsController");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -22,6 +23,12 @@ app.get('/user/:id', accountController.getUser);
 
 // route to handle user login:
 app.post('/login', accountController.loginUser);
+
+// route to get events:
+app.get("/events", eventsController.getAllEvents);
+
+// route to create events:
+app.post("/events", eventsController.createEvent);
 
 app.listen(port, async () => {
   try {
