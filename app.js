@@ -5,6 +5,7 @@ const dbConfig = require("./dbConfig");
 const bodyParser = require("body-parser");
 const accountController = require('./controllers/accountController');
 const eventsController = require("./controllers/eventsController");
+const donationController = require('./controllers/donationController');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -29,6 +30,13 @@ app.get("/events", eventsController.getAllEvents);
 
 // route to create events:
 app.post("/events", eventsController.createEvent);
+
+// route to get latest donations:
+app.get("/donations", donationController.getDonations);
+
+// route to create a donation:
+app.post("/donations", donationController.createDonation);
+
 
 app.listen(port, async () => {
   try {
