@@ -25,17 +25,21 @@ class Event {
     );
   }
 
-  static async createEvent(newEventData) {
-      const events = await this.getAllEvents();
-      const newEvent = new Event(
-          events.length + 1,
-          newEventData.event_title,
-          newEventData.description,
-          newEventData.event_date,
-          newEventData.location
-      );
-      events.push(newEvent);
-      return newEvent;
+  static async createEvent(newEventData, accountId) {
+    const connection = await sql.connect(dbConfig);
+    const request = new sql.Request(connection);
+  
+    const result = await request.query(`
+      INSERT INTO Event (account_id, event_title, description, event_date, location)
+      OUTPUT INSERTED.event_id
+      VALUES (${accountId}, '${newEventData.event_title}', '${newEventData.description}', '${newEventData.event_date}', '${newEventData.location}');
+    `);
+  
+    connection.close();
+  
+    const insertedId = result.recordset[0].event_id;
+    const newEvent = new Event(insertedId, newEventData.event_title, newEventData.description, newEventData.event_date, newEventData.location);
+    return newEvent;
   }
 }
 

@@ -12,8 +12,10 @@ const getAllEvents = async (req, res) => {
 
 const createEvent = async (req, res) => {
   const newEvent = req.body;
+  const accountId = req.body.account_id;
+
   try {
-    const createdEvent = await Event.createEvent(newEvent);
+    const createdEvent = await Event.createEvent(newEvent, accountId);
     res.status(201).json(createdEvent);
   } catch (error) {
     console.error(error);
