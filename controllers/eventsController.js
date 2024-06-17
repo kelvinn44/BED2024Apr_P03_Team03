@@ -10,6 +10,20 @@ const getAllEvents = async (req, res) => {
     }
   };
 
+const getEventById = async (req, res) => {
+  const eventId = parseInt(req.params.id);
+  try {
+    const event = await Event.getEventById(eventId);
+    if (!event) {
+      return res.status(404).send("Event not found");
+    }
+    res.json(event);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error retrieving event");
+  }
+};
+
 const createEvent = async (req, res) => {
   const newEvent = req.body;
   const accountId = req.body.account_id;
@@ -20,6 +34,22 @@ const createEvent = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send("Error creating event");
+  }
+};
+
+const updateEvent = async (req, res) => {
+  const eventId = parseInt(req.params.id);
+  const newEventData = req.body;
+
+  try {
+    const updatedEvent = await Event.updateEvent(eventId, newEventData);
+    if (!updatedEvent) {
+      return res.status(404).send("Event not found");
+    }
+    res.json(updatedEvent);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error updating event");
   }
 };
 
@@ -40,6 +70,8 @@ const deleteEvent = async (req, res) => {
 
 module.exports = {
     getAllEvents,
+    getEventById,
     createEvent,
+    updateEvent,
     deleteEvent
   };

@@ -25,6 +25,28 @@ class Event {
     );
   }
 
+  static async getEventById(eventId) {
+    const connection = await sql.connect(dbConfig);
+
+    const sqlQuery = `SELECT * FROM Event WHERE event_id = @eventId`;
+
+    const request = connection.request();
+    request.input('eventId', sql.Int, eventId);
+    const result = await request.query(sqlQuery);
+
+    connection.close();
+
+    return result.recordset[0]
+      ? new Event(
+          result.recordset[0].event_id,
+          result.recordset[0].event_title,
+          result.recordset[0].description,
+          result.recordset[0].event_date,
+          result.recordset[0].location
+        )
+      : null;
+  }
+
   static async createEvent(newEventData, accountId) {
     try {
       const connection = await sql.connect(dbConfig);
@@ -51,6 +73,32 @@ class Event {
     } catch (error) {
       throw new Error('Error creating event');
     }
+  }
+
+  static async updateEvent(eventId, newEventData) {
+    const connection = await sql.connect(dbConfig);
+  
+    const sqlQuery = `
+      UPDATE Event
+      SET event_title = @eventTitle,
+          description = @description,
+          event_date = @eventDate,
+          location = @location
+      WHERE event_id = @eventId
+    `;
+  
+    const request = connection.request();
+    request.input('eventId', sql.Int, eventId);
+    request.input('eventTitle', sql.NVarChar, newEventData.event_title || null);
+    request.input('description', sql.NVarChar, newEventData.description || null);
+    request.input('eventDate', sql.DateTime, newEventData.event_date || null);
+    request.input('location', sql.NVarChar, newEventData.location || null);
+  
+    await request.query(sqlQuery);
+  
+    connection.close();
+  
+    return this.getEventById(eventId);
   }
 
   static async deleteEvent(eventId) {

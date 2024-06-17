@@ -28,8 +28,14 @@ app.post('/login', accountController.loginUser);
 // route to get events:
 app.get("/events", eventsController.getAllEvents);
 
+// route to get events by id:
+app.get("/events/:id", eventsController.getEventById);
+
 // route to create events:
 app.post("/events", eventsController.createEvent);
+
+// route to update events:
+app.put("/events/:id", eventsController.updateEvent);
 
 // route to delete events:
 app.delete("/events/:id", eventsController.deleteEvent);
