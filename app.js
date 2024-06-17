@@ -31,6 +31,9 @@ app.get("/events", eventsController.getAllEvents);
 // route to create events:
 app.post("/events", eventsController.createEvent);
 
+// route to delete events:
+app.delete("/events/:id", eventsController.deleteEvent);
+
 // route to get latest donations:
 app.get("/donations", donationController.getDonations);
 

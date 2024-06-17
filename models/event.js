@@ -52,6 +52,24 @@ class Event {
       throw new Error('Error creating event');
     }
   }
+
+  static async deleteEvent(eventId) {
+    try {
+      const connection = await sql.connect(dbConfig);
+  
+      const sqlQuery = `DELETE FROM Event WHERE event_id = @eventId`;
+  
+      const request = connection.request();
+      request.input('eventId', sql.Int, eventId);
+      const result = await request.query(sqlQuery);
+  
+      connection.close();
+  
+      return result.rowsAffected[0] > 0;
+    } catch (error) {
+      throw new Error('Error deleting event');
+    }
+  }
 }
 
 module.exports = Event;

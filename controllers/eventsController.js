@@ -23,7 +23,23 @@ const createEvent = async (req, res) => {
   }
 };
 
+const deleteEvent = async (req, res) => {
+  const eventId = parseInt(req.params.id);
+
+  try {
+    const success = await Event.deleteEvent(eventId);
+    if (!success) {
+      return res.status(404).send("Event not found");
+    }
+    res.status(204).send();
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error deleting event");
+  }
+};
+
 module.exports = {
     getAllEvents,
     createEvent,
+    deleteEvent
   };
