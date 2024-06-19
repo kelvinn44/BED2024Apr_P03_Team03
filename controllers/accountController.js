@@ -29,8 +29,24 @@ async function loginUser(req, res) {
     res.status(500).send('Server error');
   }
 };
+
+// Function to handle user signup
+async function createUser(req, res) {
+  const { firstname, lastname, email, phone_number, password } = req.body;
+  try {
+    const newUser = await Account.createUser(firstname, lastname, email, phone_number, password);
+    res.status(201).json(newUser);
+  } catch (error) {
+    if (error.message === 'Email or phone number already in use') {
+      res.status(400).send(error.message);
+    } else {
+      res.status(500).send('Server error');
+    }
+  }
+};
   
 module.exports = {
     getUser,
     loginUser,
+    createUser,
 };

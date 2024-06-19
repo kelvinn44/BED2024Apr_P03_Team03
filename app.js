@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const accountController = require('./controllers/accountController');
 const eventsController = require("./controllers/eventsController");
 const donationController = require('./controllers/donationController');
+const validateUser = require("./middlewares/validateUserSignup");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -19,11 +20,14 @@ app.use(bodyParser.urlencoded({ extended: true })); // For form data handling
 app.use(staticMiddleware); // Mount the static middleware
 
 // Routes
-// route to get user details:
-app.get('/user/:id', accountController.getUser);
+// route to handle user sign up:
+app.post('/signup', validateUser, accountController.createUser);
 
 // route to handle user login:
 app.post('/login', accountController.loginUser);
+
+// route to get user details:
+app.get('/user/:id', accountController.getUser);
 
 // route to get events:
 app.get("/events", eventsController.getAllEvents);
