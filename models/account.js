@@ -100,6 +100,33 @@ class Account {
           throw new Error('Error creating new user');
       }
   }
+
+  // Method to update user details
+  static async updateUser(id, firstname, lastname, email, phone_number, password) {
+    try {
+        const connection = await sql.connect(dbConfig);
+        const sqlQuery = `
+            UPDATE Account 
+            SET firstname = @firstname, lastname = @lastname, email = @email, phone_number = @phone_number, password = @password
+            WHERE account_id = @id;
+        `;
+
+        const request = connection.request();
+        request.input('id', sql.Int, id);
+        request.input('firstname', sql.VarChar, firstname);
+        request.input('lastname', sql.VarChar, lastname);
+        request.input('email', sql.VarChar, email);
+        request.input('phone_number', sql.VarChar, phone_number);
+        request.input('password', sql.VarChar, password);
+
+        await request.query(sqlQuery);
+        connection.close();
+
+        return this.getUserById(id); // Return updated user details
+    } catch (error) {
+        throw new Error('Error updating user details');
+    }
+  }
 }
-  
+
 module.exports = Account;

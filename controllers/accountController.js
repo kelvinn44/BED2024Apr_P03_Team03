@@ -44,9 +44,23 @@ async function createUser(req, res) {
     }
   }
 };
+
+// Function to update user details
+async function updateUser(req, res) {
+  const { id } = req.params;
+  const { firstname, lastname, email, phone_number, password } = req.body;
+
+  try {
+      const updatedUser = await Account.updateUser(id, firstname, lastname, email, phone_number, password);
+      res.json({ user: updatedUser });
+  } catch (error) {
+      res.status(500).send('Server error');
+  }
+};
   
 module.exports = {
     getUser,
     loginUser,
     createUser,
+    updateUser,
 };

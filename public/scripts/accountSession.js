@@ -7,14 +7,6 @@ function checkAccountSession() {
 
       switch (user.role) {
         case 'User':
-            // TODO: don't populate info of staff in userAccountManagement.html
-            
-          // Populate user details
-          if (document.getElementById("user-firstname")) document.getElementById("user-firstname").textContent = user.firstname;
-          if (document.getElementById("user-lastname")) document.getElementById("user-lastname").textContent = user.lastname;
-          if (document.getElementById("user-email")) document.getElementById("user-email").textContent = user.email;
-          if (document.getElementById("user-phone")) document.getElementById("user-phone").textContent = user.phone_number;
-          if (document.getElementById("user-password")) document.getElementById("user-password").textContent = user.password;
           break;
   
         case 'ForumMod':
