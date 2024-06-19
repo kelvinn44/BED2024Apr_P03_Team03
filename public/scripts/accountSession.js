@@ -7,6 +7,8 @@ function checkAccountSession() {
 
       switch (user.role) {
         case 'User':
+            // TODO: don't populate info of staff in userAccountManagement.html
+            
           // Populate user details
           if (document.getElementById("user-firstname")) document.getElementById("user-firstname").textContent = user.firstname;
           if (document.getElementById("user-lastname")) document.getElementById("user-lastname").textContent = user.lastname;
@@ -16,7 +18,7 @@ function checkAccountSession() {
           break;
   
         case 'ForumMod':
-          dashboardLink = "forumModeratorDashboard.html";
+          dashboardLink = "forumModDashboard.html";
           break;
   
         case 'EventAdmin':
@@ -38,19 +40,19 @@ function checkAccountSession() {
             <a class="nav-link ${currentPage === dashboardLink ? 'active' : ''}" href="${dashboardLink}">${user.firstname}</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link ${currentPage === 'donation' ? 'active' : ''}" href="donation.html">Donate</a>
+            <a class="nav-link ${currentPage === 'donation.html' ? 'active' : ''}" href="donation.html">Donate</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link ${currentPage === 'event' ? 'active' : ''}" href="event.html">Events</a>
+            <a class="nav-link ${currentPage === 'event.html' ? 'active' : ''}" href="event.html">Events</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link ${currentPage === 'forum' ? 'active' : ''}" href="forum.html">Forum</a>
+            <a class="nav-link ${currentPage === 'forum.html' ? 'active' : ''}" href="forum.html">Forum</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link ${currentPage === 'aboutUs' ? 'active' : ''}" href="aboutUs.html">About Us</a>
+            <a class="nav-link ${currentPage === 'aboutUs.html' ? 'active' : ''}" href="aboutUs.html">About Us</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link ${currentPage === 'credit' ? 'active' : ''}" href="credit.html">Credit</a>
+            <a class="nav-link ${currentPage === 'credit.html' ? 'active' : ''}" href="credit.html">Credit</a>
           </li>
         `;
       }
@@ -68,22 +70,22 @@ function checkAccountSession() {
       if (navbarLinks) {
         navbarLinks.innerHTML = `
           <li class="nav-item">
-            <a class="nav-link" href="login.html">Login</a>
+            <a class="nav-link ${currentPage === 'login.html' ? 'active' : ''}" href="login.html">Login</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="donation.html">Donate</a>
+            <a class="nav-link ${currentPage === 'donation.html' ? 'active' : ''}" href="donation.html">Donate</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="event.html">Events</a>
+            <a class="nav-link ${currentPage === 'event.html' ? 'active' : ''}" href="event.html">Events</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="forum.html">Forum</a>
+            <a class="nav-link ${currentPage === 'forum.html' ? 'active' : ''}" href="forum.html">Forum</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="aboutUs.html">About Us</a>
+            <a class="nav-link ${currentPage === 'aboutUs.html' ? 'active' : ''}" href="aboutUs.html">About Us</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="credit.html">Credit</a>
+            <a class="nav-link ${currentPage === 'credit.html' ? 'active' : ''}" href="credit.html">Credit</a>
           </li>
         `;
       }
