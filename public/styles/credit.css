@@ -18,6 +18,15 @@ nav a {
     color: black;
 }
 
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.content {
+    flex: 1;
+}
+
 /* footer css */
 .footer-custom {
     background-color: #1F262D;

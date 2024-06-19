@@ -30,7 +30,7 @@ async function loginUser(req, res) {
   }
 };
 
-// Function to handle user signup
+// Function to handle user sign up
 async function createUser(req, res) {
   const { firstname, lastname, email, phone_number, password } = req.body;
   try {

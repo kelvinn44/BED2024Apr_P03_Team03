@@ -1,3 +1,4 @@
+/* nav bar css */
 .custom-navbar {
     background-color: lightblue;
 }
@@ -17,38 +18,29 @@ nav a {
     color: black;
 }
 
-.login-form {
-    max-width: 400px;
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.content {
+    flex: 1;
+}
+
+/* account details css */
+.account-details {
+    max-width: 600px;
     margin: 50px auto;
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 10px;
     background-color: #f9f9f9;
 }
-.login-form h2 {
+.account-details h2 {
     margin-bottom: 20px;
 }
-.form-group label {
-    font-weight: bold;
-}
-.form-control {
-    border-radius: 5px;
-}
-.btn-primary {
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px;
-    padding: 10px;
-    font-size: 16px;
-}
-.btn-primary:hover {
-    background-color: #0056b3;
-}
-.text-center a {
-    color: #007bff;
-}
-.text-center a:hover {
-    text-decoration: underline;
+.account-details p {
+    margin: 5px 0;
 }
 
 /* footer css */

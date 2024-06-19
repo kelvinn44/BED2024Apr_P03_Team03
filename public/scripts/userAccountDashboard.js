@@ -1,9 +1,10 @@
 // Check if the user is logged in
 const user = JSON.parse(localStorage.getItem("user"));
 if (!user) {
-    window.location.href = "loginOption.html";
+    window.location.href = "login.html";
 }
 
+// TODO: add roles etc and PUT function to update user details***
 // Populate user details
 document.getElementById("user-firstname").textContent = user.firstname;
 document.getElementById("user-lastname").textContent = user.lastname;
@@ -15,7 +16,7 @@ document.getElementById("user-password").textContent = user.password;
 // Populate the navbar with the user's name
 document.getElementById("navbar-links").innerHTML = `
     <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="userAccountManagement.html">${user.firstname}</a>
+        <a class="nav-link active" aria-current="page" href="userAccountDashboard.html">${user.firstname}</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="donation.html">Donate</a>

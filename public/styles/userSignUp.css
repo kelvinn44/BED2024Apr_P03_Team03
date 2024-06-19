@@ -18,20 +18,23 @@ nav a {
     color: black;
 }
 
-/* account details css */
-.account-details {
-    max-width: 600px;
-    margin: 50px auto;
+/* sign up content css */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.content {
+    flex: 1;
+}
+
+.signup-form {
+    max-width: 500px;
+    margin: 20px auto;
     padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    background-color: #f9f9f9;
-}
-.account-details h2 {
-    margin-bottom: 20px;
-}
-.account-details p {
-    margin: 5px 0;
+    background-color: #f7f7f7;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 /* footer css */
