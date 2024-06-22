@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const accountController = require('./controllers/accountController');
 const eventsController = require("./controllers/eventsController");
 const donationController = require('./controllers/donationController');
+const forumController = require('./controllers/forumController');
 const validateUser = require("./middlewares/validateUserSignup");
 
 const app = express();
@@ -49,6 +50,22 @@ app.get("/donations", donationController.getDonations);
 
 // route to create a donation:
 app.post("/donations", donationController.createDonation);
+
+//route to get all posts:
+app.get("/posts", forumController.getAllPosts);
+
+//route to get post by id:
+app.get("/posts/:id", forumController.getPostById);
+
+//route to create a post:
+app.post("/posts", forumController.createPost);
+
+//route to update a post:
+app.put("/posts/:id", forumController.updatePost);
+
+//route to delete a post:
+app.delete("/posts/:id", forumController.deletePost);
+
 
 
 app.listen(port, async () => {
