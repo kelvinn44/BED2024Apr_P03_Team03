@@ -20,11 +20,14 @@ nav a {
 
 /* event info css */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    margin: 0;
-    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
+.content {
+    flex: 1;
+}
+
 .container {
     width: 50%;
     margin: 50px auto;

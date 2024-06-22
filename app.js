@@ -30,6 +30,9 @@ app.post('/login', accountController.loginUser);
 // route to get user details:
 app.get('/user/:id', accountController.getUser);
 
+// route to update user details:
+app.put('/user/:id', accountController.updateUser);
+
 // route to get events:
 app.get("/events", eventsController.getAllEvents);
 
