@@ -1,5 +1,6 @@
 const Joi = require("joi");
 
+//remove error message?
 const validateUser = (req, res, next) => {
   const schema = Joi.object({
     firstname: Joi.string().min(1).max(50).required().messages({
