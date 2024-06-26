@@ -4,13 +4,13 @@ if (!user) {
     window.location.href = "login.html";
 }
 
-// TODO: populate roles? and don't populate staff info here ***
 // Populate user details
 document.getElementById("user-firstname").textContent = user.firstname;
 document.getElementById("user-lastname").textContent = user.lastname;
 document.getElementById("user-email").textContent = user.email;
 document.getElementById("user-phone").textContent = user.phone_number;
 document.getElementById("user-password").textContent = "********"; // Hide password by default
+// Add user role here?
 
 // Handle password visibility toggle
 document.getElementById("toggle-password").addEventListener("click", function() {
@@ -89,31 +89,7 @@ fetch(`/user/${user.account_id}`)
     })
     .catch((error) => console.error("Error fetching user details:", error));
 
-// Fetch donations and events - Not done **************************
-// fetch(`/user/${user.account_id}/donations`)
-//     .then((response) => response.json())
-//     .then((data) => {
-//         const donationsList = document.getElementById("donations-list");
-//         data.donations.forEach((donation) => {
-//             const li = document.createElement("li");
-//             li.textContent = `$${donation.amount} on ${new Date(donation.donation_date).toLocaleString()}`;
-//             donationsList.appendChild(li);
-//         });
+// Fetch user donations and events sign up - Not done, to be implemented later:
+// Fetch user donations
 
-//         // Display recurring donation amount
-//         document.getElementById("recurring-donation-amount").textContent =
-//             data.recurringDonation ? `$${data.recurringDonation}` : "no";
-//     })
-//     .catch((error) => console.error("Error fetching donations:", error));
-
-// fetch(`/user/${user.account_id}/events`)
-//     .then((response) => response.json())
-//     .then((data) => {
-//         const eventsList = document.getElementById("events-list");
-//         data.forEach((event) => {
-//             const li = document.createElement("li");
-//             li.textContent = event.name;
-//             eventsList.appendChild(li);
-//         });
-//     })
-//     .catch((error) => console.error("Error fetching events:", error));
+// Fetch user events sign up

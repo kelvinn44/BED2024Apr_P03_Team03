@@ -20,7 +20,7 @@ async function loginUser(req, res) {
   try {
     const user = await Account.getUserByEmail(email);
     if (user && user.password === password) {
-      // For simplicity, we directly compare the plain-text password (TO BE UPDATED LATER)
+      // For simplicity, we directly compare the plain-text password (To be updated later with hashed passwords and JWT implementation)
       res.json({ message: 'Login successful', user });
     } else {
       res.status(401).send('Invalid credentials');

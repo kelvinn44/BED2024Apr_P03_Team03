@@ -1,5 +1,7 @@
 const sql = require('mssql');
 const dbConfig = require('../dbConfig');
+
+// For password hashing and JWT implementation later
 // const bcrypt = require('bcrypt');
 // const jwt = require('jsonwebtoken');
 
@@ -84,7 +86,7 @@ class Account {
         request.input('lastname', sql.VarChar, lastname);
         request.input('email', sql.VarChar, email);
         request.input('phone_number', sql.VarChar, phone_number);
-        request.input('password', sql.VarChar, password); // In production env, hash the password (TO BE UPDATED LATER)
+        request.input('password', sql.VarChar, password); // password hashing to be implemented later
         request.input('role', sql.VarChar, 'User');
         const result = await request.query(sqlQuery);
   
