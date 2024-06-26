@@ -49,13 +49,6 @@ function checkAccountSession() {
         `;
       }
   
-      // Handle logout
-      document.getElementById("logout").addEventListener("click", (event) => {
-        event.preventDefault();
-        localStorage.removeItem("user");
-        alert("Successfully logged out!");
-        window.location.href = "index.html";
-      });
     } else {
       // Populate the navbar for non-logged-in users
       const navbarLinks = document.getElementById("navbar-links");

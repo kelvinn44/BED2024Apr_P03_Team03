@@ -1,10 +1,10 @@
 document.getElementById('signupForm').addEventListener('submit', function(event) {
     event.preventDefault();
-    let firstname = document.getElementById('firstname').value;
-    let lastname = document.getElementById('lastname').value;
-    let email = document.getElementById('email').value;
-    let phone_number = document.getElementById('phone_number').value;
-    let password = document.getElementById('password').value;
+    let firstname = document.getElementById('user-firstname').value;
+    let lastname = document.getElementById('user-lastname').value;
+    let email = document.getElementById('user-email').value;
+    let phone_number = document.getElementById('user-phone').value;
+    let password = document.getElementById('user-password').value;
 
     fetch('/signup', {
         method: 'POST',
@@ -20,23 +20,31 @@ document.getElementById('signupForm').addEventListener('submit', function(event)
         return response.json();
     })
     .then(data => {
-        alert("Sign up successfully!\nWelcome to Willing Hearts " + firstname + "!\nPlease sign in to continue.");
+        // Verify that data is present before proceeding
+        if (data) {
+            // Store new user data in local storage
+            localStorage.setItem('user', JSON.stringify(data));
 
-        // Clear input fields
-        document.getElementById('signupForm').reset();
+            // Alert new user of successful sign up
+            alert("Sign up successfully!\nWelcome to Willing Hearts " + firstname + "!");
 
-        // Add data to local storage for current user
-        localStorage.setItem('user', JSON.stringify(data.user));
+            // Clear input fields
+            document.getElementById('signupForm').reset();
 
-        // Redirect to userAccountManagement.html - TODO
-        window.location.href = "login.html";
+            // Redirect to the user account dashboard
+            window.location.href = "userAccountDashboard.html";
+        } else {
+            console.error("User data not found in server response.");
+            alert("Sign up failed: User data not found in server response.");
+        }
     })
     .catch(error => {
+        //add useful error message later
         let errorMessage = error.message || "An error occurred while signing up. Please try again later.";
         alert("Sign up failed: " + errorMessage + "\nPlease try again.");
         console.error('Error:', error);
-        document.getElementById('password').value = "";
+
+        // restarts password field if error occur
+        document.getElementById('user-password').value = "";
     });
 });
-
-// TODO: after sign up successful redurect to userAccountManagement.html and populate info from local storage

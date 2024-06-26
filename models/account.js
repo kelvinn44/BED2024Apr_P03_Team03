@@ -92,9 +92,9 @@ class Account {
   
         connection.close();
 
-          const account_id = result.recordset[0].account_id;
-          const newAccount = new Account(account_id, firstname, lastname, email, phone_number, password, 'User');
-          return newAccount;
+        const account_id = result.recordset[0].account_id;
+        const newAccount = new Account(account_id, firstname, lastname, email, phone_number, password, 'User');
+        return newAccount;
       } catch (error) {
           if (error.code === 'EREQUEST' && error.originalError.info.message.includes('Violation of UNIQUE KEY constraint')) {
               throw new Error('Email or phone number already in use');

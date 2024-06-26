@@ -58,10 +58,10 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     .then(data => {
         if (data.message === 'Login successful') {
             if ((loginType === 'user' && data.user.role !== 'User') || 
-                (loginType === 'staff' && data.user.role !== staffRole)) { // TODO: don't show the staffRole if it's not a staff login
+                (loginType === 'staff' && data.user.role !== staffRole)) {
                 alert(`Role mismatch! Please log in as ${data.user.role}.`);
             } else {
-                alert(`Login successful! Welcome back ${data.user.firstname}`);
+                alert(`Login successful!\nWelcome back ${data.user.firstname}`);
                 localStorage.setItem('user', JSON.stringify(data.user));
                 if (loginType === 'staff') {
                     window.location.href = staffRole === 'ForumMod' ? 'forumModDashboard.html' : 'eventAdminDashboard.html';
@@ -78,5 +78,3 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         alert('An error occurred. Please try again later.');
     });
 });
-
-// todo: don't populate staff info into userAccountManagement.html
