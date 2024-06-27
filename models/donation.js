@@ -1,5 +1,5 @@
-//const sql = require('mssql');
-//const dbConfig = require('../dbConfig');
+const sql = require('mssql');
+const dbConfig = require('../dbConfig');
 
 class Donation {
     constructor(donation_id, account_id, amount, date) {
@@ -14,14 +14,14 @@ class Donation {
       try {
         const connection = await sql.connect(dbConfig);
         //const result = await pool.request()
-        const sqlQuery = ('SELECT Account.firstname, Donation.amount FROM Donation INNER JOIN Account ON Account.account_id = Donation.account_id ORDER BY Donation.donation_date DESC OFFSET 0 ROWS FETCH NEXT 5 ROWS ONLY');
+        const sqlQuery = ('SELECT Donation.account.id, Account.firstname, Donation.amount FROM Donation INNER JOIN Account ON Account.account_id = Donation.account_id ORDER BY Donation.donation_date DESC OFFSET 0 ROWS FETCH NEXT 5 ROWS ONLY');
 
         const request = connection.request();
         const result = await request.query(sqlQuery);
 
         connection.close();
         return result.recordset.map(
-            donation => new Donation(donation.account_id, donation.amount)
+            donation => new Donation(donation.account_id, account.firstname, donation.amount)
         );
       } catch (error) {
         throw new Error('Error fetching donations');
