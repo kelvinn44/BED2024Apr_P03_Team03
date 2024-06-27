@@ -15,7 +15,7 @@ static async getAllPosts(){
 
     const connection = await sql.connect(dbConfig);
 
-    const sqlQuery = `SELECT * FROM Post`;
+    const sqlQuery = `SELECT * FROM Forum`;
 
     const request = connection.request();
     const result = await request.query(sqlQuery);
@@ -79,13 +79,13 @@ static async updatePost(postId, updatedPostData){
     try {
         const connection = await sql.connect(dbConfig);
         const sqlQuery = `
-          UPDATE Post
+          UPDATE Forum
           SET title = @title, content = @content
-          WHERE post_id = @postId
+          WHERE post_id = @post_Id
         `;
     
         const request = connection.request();
-        request.input('postId', sql.Int, postId);
+        request.input('post_Id', sql.Int, postId);
         request.input('title', sql.NVarChar, updatedPostData.title);
         request.input('content', sql.NVarChar, updatedPostData.content);
     
@@ -105,7 +105,7 @@ static async updatePost(postId, updatedPostData){
 static async deletePost(postId){
     try {
         const connection = await sql.connect(dbConfig);
-        const sqlQuery = `DELETE FROM Post WHERE post_id = @postId`;
+        const sqlQuery = `DELETE FROM Forum WHERE post_id = @postId`;
     
         const request = connection.request();
         request.input('postId', sql.Int, postId);
@@ -120,5 +120,5 @@ static async deletePost(postId){
       }
 } };
 
-module.exports = Event;
+module.exports = Forum;
    
