@@ -31,43 +31,17 @@ class Donation {
 
     //DRAFT
     
-    // static async createDonation(account_id, amount) {
-    //     try {
-    //         const connection = await sql.connect(dbConfig); // Declare the 'connection' variable
-    //         const sqlQuery = `INSERT INTO Donation (account_id, amount, donation_date) VALUES (@account_id, @amount, GETDATE()); SELECT SCOPE_IDENTITY() AS donation_id;`;
-    
-    //         const request = connection.request(); // Use the 'connection' variable
-    //         request.input('account_id', sql.Int, account_id);
-    //         request.input('amount', sql.Decimal(10, 2), amount);
-    //         const result = await request.query(sqlQuery);
-    
-    //         connection.close();
-    
-    //         return this.getDonations(result.recordset[0].donation_id);
-    //     } catch (error) {
-    //         throw new Error('Error creating donation');
-    //     } finally {
-    //         if (connection) {
-    //             connection.close();
-    //         }
-    //     }
-    // }
     static async createDonation(account_id, amount) {
-      let connection;
-      try {
-          connection = await sql.connect(dbConfig);
-          const sqlQuery = `
-              INSERT INTO Donation (account_id, amount, donation_date) 
-              VALUES (@account_id, @amount, GETDATE()); 
-              SELECT SCOPE_IDENTITY() AS donation_id;
-          `;
-  
-          const request = connection.request();
-          request.input('account_id', sql.Int, account_id);
-          request.input('amount', sql.Decimal(10, 2), amount);
-          const result = await request.query(sqlQuery);
-  
-          const donationId = result.recordset[0].donation_id;
+        let connection; // Declare the 'connection' variable here to make it accessible in the 'finally' block
+        try {
+            const connection = await sql.connect(dbConfig); // Declare the 'connection' variable
+            const sqlQuery = `INSERT INTO Donation (account_id, amount, donation_date) VALUES (@account_id, @amount, GETDATE()); SELECT SCOPE_IDENTITY() AS donation_id;`;
+    
+            const request = connection.request(); // Use the 'connection' variable
+            request.input('account_id', sql.Int, account_id);
+            request.input('amount', sql.Decimal(10, 2), amount);
+            const result = await request.query(sqlQuery);
+    const donationId = result.recordset[0].donation_id;
   
           // Fetch the newly created donation details
           const fetchQuery = `
@@ -79,23 +53,25 @@ class Donation {
           request.input('donationId', sql.Int, donationId);
           const fetchResult = await request.query(fetchQuery);
   
-          connection.close();
-  
-          const donation = fetchResult.recordset[0];
-          return {
+    
+            connection.close();
+    
+            const donation = fetchResult.recordset[0];
+            return {
               donation_id: donation.donation_id,
               account_id: donation.account_id,
               firstname: donation.firstname,
               amount: donation.amount
           };
-      } catch (error) {
-          throw new Error('Error creating donation');
-      } finally {
-          if (connection) {
-              connection.close();
-          }
-      }
-  }
+    
+        } catch (error) {
+            throw new Error('Error creating donation');
+        } finally {
+            if (connection) {
+                connection.close();
+            }
+        }
+    }
 }
 
 module.exports = Donation;
