@@ -30,7 +30,7 @@ static async getAllPosts(){
 static async getPostById(postId){
     const connection = await sql.connect(dbConfig);
 
-    const sqlQuery = `SELECT * FROM Forum WHERE postId = @postId`;
+    const sqlQuery = `SELECT * FROM Forum WHERE post_id = @postId`;
     const request = connection.request();
     request.input('postId', sql.Int, postId);
     const result = await request.query(sqlQuery);
@@ -38,7 +38,7 @@ static async getPostById(postId){
     connection.close();
 
     return result.recordset[0]
-      ? new Event(
+      ? new Forum(
           result.recordset[0].post_id,
           result.recordset[0].account_id,
           result.recordset[0].post_date,
@@ -52,14 +52,14 @@ static async createPost(newPostData, accountId){
     try {
         const connection = await sql.connect(dbConfig);
         const sqlQuery = `
-          INSERT INTO Post (account_id, post_date, title, content)
+          INSERT INTO Forum (account_id, post_date, title, content)
           VALUES (@accountId, @postDate, @title, @content);
           SELECT SCOPE_IDENTITY() AS post_id;
         `;
     
         const request = connection.request();
         request.input('accountId', sql.Int, accountId);
-        request.input('postDate', sql.DateTime, new Date());
+        request.input('postDate', sql.DateTime, newPostData.post_date);
         request.input('title', sql.NVarChar, newPostData.title);
         request.input('content', sql.NVarChar, newPostData.content);
     
@@ -121,4 +121,5 @@ static async deletePost(postId){
 } };
 
 module.exports = Forum;
+
    
