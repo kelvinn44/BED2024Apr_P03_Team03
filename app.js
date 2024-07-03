@@ -70,8 +70,6 @@ app.put("/posts/:id", forumController.updatePost);
 app.delete("/posts/:id", forumController.deletePost);
 
 
-//For Polytechnic Library API routes (Week 11 & 12 Practical):
-
 
 app.listen(port, async () => {
   try {
