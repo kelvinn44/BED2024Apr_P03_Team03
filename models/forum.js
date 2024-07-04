@@ -88,7 +88,7 @@ static async updatePost(postId, updatedPostData){
         request.input('post_Id', sql.Int, postId);
         request.input('title', sql.NVarChar, updatedPostData.title);
         request.input('content', sql.NVarChar, updatedPostData.content);
-    
+       
         const result = await request.query(sqlQuery);
     
         connection.close();
