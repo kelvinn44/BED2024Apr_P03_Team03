@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Books App</title>
+    <link rel="stylesheet" href="styles/styles.css" />
+  </head>
+  <body>
+    <h1>Books API</h1>
+
+    <!-- Login Form -->
+    <h2>Login</h2>
+    <form id="login-form">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <button type="submit">Login</button>
+    </form>
+    <p id="login-status"></p>
+
+    <h2>Register</h2>
+    <form id="register-form">
+        <label for="username">Username:</label>
+        <input type="text" id="register-username" name="username" required>
+        <label for="password">Password:</label>
+        <input type="password" id="register-password" name="password" required>
+        <label for="role">Role:</label>
+        <select id="register-role" name="role" required>
+            <option value="member">Member</option>
+            <option value="librarian">Librarian</option>
+        </select>
+        <button type="submit">Register</button>
+    </form>
+    <p id="register-status"></p>
+
+    <section id="book-list"></section>
+
+    <!-- Add Book Form -->
+    <h2>Add New Book</h2>
+    <form id="add-book-form">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required>
+        <label for="author">Author:</label>
+        <input type="text" id="author" name="author" required>
+        <button type="submit">Add Book</button>
+    </form>
+
+    <!-- Update Availability Form -->
+    <h2 id="update-availability-header" style="display: none;">Update Book Availability</h2>
+    <form id="update-availability-form" style="display: none;">
+        <label for="book-id">Book ID:</label>
+        <input type="number" id="book-id" name="book-id" required>
+        <label for="availability">Availability:</label>
+        <select id="availability" name="availability" required>
+            <option value="Y">Yes</option>
+            <option value="N">No</option>
+        </select>
+        <button type="submit">Update Availability</button>
+    </form>
+    
+    <script src="scripts/script.js"></script>
+  </body>
+</html>
