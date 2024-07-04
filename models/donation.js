@@ -2,11 +2,11 @@ const sql = require('mssql');
 const dbConfig = require('../dbConfig');
 
 class Donation {
-    constructor(donation_id, account_id, amount, date) {
+    constructor(donation_id, account_id, amount, firstname) {
       this.donation_id = donation_id;
       this.account_id = account_id;
       this.amount = amount;
-      this.date = date;
+      this.firstname = firstname;
     }
   
     // Method to get 5 latest donations
@@ -28,8 +28,6 @@ class Donation {
       }
     }
 
-
-    //DRAFT
     
     static async createDonation(account_id, amount) {
         let connection; // Declare the 'connection' variable here to make it accessible in the 'finally' block
