@@ -10,6 +10,7 @@ class Event {
     this.location = location;
   }
 
+  // Method to get all events
   static async getAllEvents() {
     const connection = await sql.connect(dbConfig);
 
@@ -25,6 +26,7 @@ class Event {
     );
   }
 
+  // Method to get events by event id
   static async getEventById(eventId) {
     const connection = await sql.connect(dbConfig);
 
@@ -47,6 +49,7 @@ class Event {
       : null;
   }
 
+  // Method to create an event
   static async createEvent(newEventData, accountId) {
     try {
       const connection = await sql.connect(dbConfig);
@@ -75,6 +78,7 @@ class Event {
     }
   }
 
+  // Method to update an event
   static async updateEvent(eventId, newEventData) {
     const connection = await sql.connect(dbConfig);
   
@@ -100,7 +104,8 @@ class Event {
   
     return this.getEventById(eventId);
   }
-
+  
+  // Method to update an event
   static async deleteEvent(eventId) {
     try {
       const connection = await sql.connect(dbConfig);
