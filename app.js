@@ -5,6 +5,7 @@ const dbConfig = require("./dbConfig");
 const bodyParser = require("body-parser");
 const accountController = require('./controllers/accountController'); // Kelvin's function
 const eventsController = require("./controllers/eventsController"); // Aaron's function
+const eventSignUpController = require("./controllers/eventSignUpController");
 const donationController = require('./controllers/donationController'); // Anne Marie's function
 const forumController = require('./controllers/forumController'); // Natalie's function
 const validateUser = require("./middlewares/validateUserSignup");
@@ -47,6 +48,12 @@ app.put("/events/:id", eventsController.updateEvent);
 
 // route to delete events - Aaron's function:
 app.delete("/events/:id", eventsController.deleteEvent);
+
+// route to get event sign ups by account id
+app.get("/eventSignUp/:id", eventSignUpController.getEventSignUpByAccId);
+
+// route to create event sign ups
+app.post("/eventSignUp", eventSignUpController.createEventSignUp);
 
 // route to get latest donations - Anne Marie's function:
 app.get("/donations", donationController.getDonations);
