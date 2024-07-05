@@ -1,5 +1,6 @@
 const Event = require("../models/event");
 
+// Function to get all event details
 const getAllEvents = async (req, res) => {
     try {
       const events = await Event.getAllEvents();
@@ -10,6 +11,7 @@ const getAllEvents = async (req, res) => {
     }
   };
 
+// Function to get event by id
 const getEventById = async (req, res) => {
   const eventId = parseInt(req.params.id);
   try {
@@ -24,6 +26,7 @@ const getEventById = async (req, res) => {
   }
 };
 
+// Function to create event
 const createEvent = async (req, res) => {
   const newEvent = req.body;
   const accountId = req.body.account_id;
@@ -37,6 +40,7 @@ const createEvent = async (req, res) => {
   }
 };
 
+// Function to update event details
 const updateEvent = async (req, res) => {
   const eventId = parseInt(req.params.id);
   const newEventData = req.body;
@@ -53,6 +57,7 @@ const updateEvent = async (req, res) => {
   }
 };
 
+// Function to delete event
 const deleteEvent = async (req, res) => {
   const eventId = parseInt(req.params.id);
 
