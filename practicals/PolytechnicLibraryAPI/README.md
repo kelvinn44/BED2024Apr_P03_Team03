@@ -1,7 +1,7 @@
 ## Week 11 & 12 Practical - Polytechnic Library API notes
 
 Create a ".env" file in PolytechnicLibaryAPI directory and in the file enter the following:
-`ACCESS_TOKEN_SECRET=<your_secret_key>`
+`JWT_SECRET_KEY=<your_secret_key>`
 
 To create a random secret key:
 1. In your terminal type "node"
@@ -10,9 +10,6 @@ To create a random secret key:
 
 ### dbConfig.js update reminder
 Update the dbConfig.js username, password, and database to match your own DB configuration.
-
-### Other routes issue
-When trying GET /users route or others, update the auth.js (`const authorizedRoles`) middleware accordingly.
 
 ### Postman Testing
 
@@ -36,7 +33,7 @@ User2:Hashed2 - member role
 
 User3:Hashed3 - librarian role
 
-****Front-end is partially working, the main requirements for Back-end API works**
+****Main requirements for Back-end API fully working using Postman**
 
 e.g.:
 

@@ -1,9 +1,8 @@
-require('dotenv').config();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require('../models/user');
 
-// Create a new user
+// Create a new user - previous practical
 // async function createUser(req, res) {
 //   try {
 //     const { username, email } = req.body;
@@ -91,39 +90,42 @@ async function getUsersWithBooks(req, res) {
   }
 }
 
-const registerUser = async (req, res) => {
+async function registerUser(req, res) {
   const { username, password, role } = req.body;
 
   try {
     // Validate user data
     if (!username || !password || !role) {
-      return res.status(400).json({ message: "All fields are required" });
+      return res.status(400).json({ message: "Please provide username, password, and role" });
     }
 
-    // Check password strength (basic check)
-    if (password.length < 6) {
-      return res
-        .status(400)
-        .json({ message: "Password must be at least 6 characters long" });
+    // Check for existing username
+    const existingUser = await User.getUserByUsername(username);
+    if (existingUser) {
+      return res.status(400).json({ message: "Username already exists" });
     }
 
-    // Check role validity
-    const validRoles = ["member", "librarian"];
-    if (!validRoles.includes(role)) {
-      return res.status(400).json({ message: "Invalid role" });
-    }
+    // Hash password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
-    const newUser = await User.register({ username, password, role });
-    res
-      .status(201)
-      .json({ message: "User registered successfully", user: newUser });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: error.message });
+    // Create user in database
+    const newUser = {
+      username,
+      passwordHash: hashedPassword,
+      role
+    };
+
+    const createdUser = await User.createUser(newUser);
+
+    return res.status(201).json({ message: "User created successfully", user: createdUser });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Internal server error" });
   }
-};
+}
 
-const login = async (req, res) => {
+async function login(req, res) {
   const { username, password } = req.body;
 
   try {
@@ -141,17 +143,17 @@ const login = async (req, res) => {
 
     // Generate JWT token
     const payload = {
-      id: user.user_id,
+      id: user.id,
       role: user.role,
     };
-    const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "3600s" }); // Expires in 1 hour
+    const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: "3600s" }); // Expires in 1 hour
 
     return res.status(200).json({ token });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "Internal server error" });
   }
-};
+}
 
 module.exports = {
   //createUser,

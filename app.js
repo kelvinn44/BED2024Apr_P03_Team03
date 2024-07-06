@@ -1,8 +1,11 @@
 // import required modules here
 const express = require("express");
 const sql = require("mssql");
+require("dotenv").config();
 const dbConfig = require("./dbConfig");
 const bodyParser = require("body-parser");
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger-output.json"); // Import generated spec
 const accountController = require('./controllers/accountController'); // Kelvin's function
 const eventsController = require("./controllers/eventsController"); // Aaron's function
 const eventSignUpController = require("./controllers/eventSignUpController");
@@ -20,6 +23,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true })); // For form data handling
 
 app.use(staticMiddleware); // Mount the static middleware
+
+// Serve the Swagger UI at a specific route
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Routes
 // route to handle user sign up - Kelvin's function:

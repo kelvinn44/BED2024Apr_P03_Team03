@@ -1,4 +1,5 @@
 const express = require("express");
+require("dotenv").config(); // Load environment variables from a .env file
 const booksController = require("./controllers/booksController");
 const sql = require("mssql");
 const dbConfig = require("./dbConfig");
@@ -6,7 +7,7 @@ const bodyParser = require("body-parser"); // Import body-parser
 const validateBook = require("./middlewares/validateBook");
 const usersController = require("./controllers/usersController");
 const bookController = require("./controllers/booksController");
-const verifyJWT = require('./middlewares/auth');
+const authorizeUser = require('./middlewares/authorizeUser');
 
 const app = express();
 const port = process.env.PORT || 3000; // Use environment variable or default port
@@ -31,14 +32,14 @@ app.get("/users/search", usersController.searchUsers);
 app.get("/users/with-books", usersController.getUsersWithBooks);
 
 // Routes for GET requests (replace with appropriate routes for update and delete later)
-app.get("/books", verifyJWT, booksController.getAllBooks);
+app.get("/books", authorizeUser, booksController.getAllBooks);
 app.get("/books/:id", booksController.getBookById);
 app.post("/books", validateBook, booksController.createBook); // POST for creating books (can handle JSON data)
 app.put("/books/:id", validateBook, booksController.updateBook); // PUT for updating books
 app.delete("/books/:id", booksController.deleteBook); // DELETE for deleting books
 
 // New route for updating availability
-app.put("/books/:bookId/availability", verifyJWT, bookController.updateAvailability);
+app.put("/books/:bookId/availability", authorizeUser, bookController.updateAvailability);
 
 //app.post("/users", usersController.createUser); // Create user - previous practical
 
