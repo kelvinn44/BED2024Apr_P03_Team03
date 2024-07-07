@@ -24,7 +24,7 @@ email : password
 - tom@email.com : Tom@Cruise456
 - emily@email.com : Emily$Blunt789
 ### Admin accounts:
-- admin1@willinghearts.com : AdminPass@123
-- admin2@willinghearts.com : PassAdmin@8888
-- EventAdmin2@willinghearts.com : Password@8888
-- ForumMod2@willinghearts.com : Mod@Super123
+- admin1@willinghearts.com : AdminPass@123 `(EventAdmin)`
+- admin2@willinghearts.com : PassAdmin@8888 `(ForumMod)`
+- EventAdmin2@willinghearts.com : Password@8888 `(EventAdmin)`
+- ForumMod2@willinghearts.com : Mod@Super123 `(ForumMod)`
