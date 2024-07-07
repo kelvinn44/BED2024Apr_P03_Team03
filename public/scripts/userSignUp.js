@@ -21,9 +21,10 @@ document.getElementById('signupForm').addEventListener('submit', function(event)
     })
     .then(data => {
         // Verify that data is present before proceeding
-        if (data) {
-            // Store new user data in local storage
-            localStorage.setItem('user', JSON.stringify(data));
+        if (data && data.user && data.token) {
+            // Store new user data and JWT token in local storage
+            localStorage.setItem('user', JSON.stringify(data.user));
+            localStorage.setItem('token', data.token);
 
             // Alert new user of successful sign up
             alert("Sign up successfully!\nWelcome to Willing Hearts " + firstname + "!");
@@ -35,7 +36,7 @@ document.getElementById('signupForm').addEventListener('submit', function(event)
             window.location.href = "userAccountDashboard.html";
         } else {
             console.error("User data not found in server response.");
-            alert("Sign up failed: User data not found in server response.");
+            alert("Sign up failed: User data or token not found in server response.");
         }
     })
     .catch(error => {
