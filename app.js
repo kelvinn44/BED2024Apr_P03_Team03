@@ -12,6 +12,7 @@ const eventSignUpController = require("./controllers/eventSignUpController");
 const donationController = require('./controllers/donationController'); // Anne Marie's function
 const forumController = require('./controllers/forumController'); // Natalie's function
 const validateUser = require("./middlewares/validateUserSignup");
+const authenticateAccount = require('./middlewares/authenticateAccount');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -35,7 +36,7 @@ app.post('/signup', validateUser, accountController.createUser);
 app.post('/login', accountController.loginUser);
 
 // route to get user details - Kelvin's function:
-app.get('/user/:id', accountController.getUser);
+app.get('/user/:id', authenticateAccount, accountController.getUser);
 
 // route to update user details - Kelvin's function:
 app.put('/user/:id', accountController.updateUser);
@@ -59,7 +60,7 @@ app.delete("/events/:id", eventsController.deleteEvent);
 app.get("/eventSignUp/:id", eventSignUpController.getEventSignUpByAccId);
 
 // route to create event sign ups
-app.post("/eventSignUp", eventSignUpController.createEventSignUp);
+app.post("/eventSignUp", authenticateAccount, eventSignUpController.createEventSignUp);
 
 // route to get latest donations - Anne Marie's function:
 app.get("/donations", donationController.getDonations);

@@ -18,7 +18,7 @@ function checkAccountSession() {
           break;
   
         default:
-          alert("Invalid user role. Please contact support.");
+          alert("Invalid user role. Please log in again.");
           localStorage.removeItem("user");
           window.location.href = "login.html";
           return;

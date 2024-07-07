@@ -1,10 +1,6 @@
 const sql = require('mssql');
 const dbConfig = require('../dbConfig');
 
-// For password hashing and JWT implementation later
-// const bcrypt = require('bcrypt');
-// const jwt = require('jsonwebtoken');
-
 class Account {
     constructor(account_id, firstname, lastname, email, phone_number, password, role, recurring_donation_amount) {
       this.account_id = account_id;
@@ -71,13 +67,40 @@ class Account {
       }
     }
 
+    // Method to get user by phone number
+    static async getUserByPhoneNum(phone_number) {
+      try {
+        const connection = await sql.connect(dbConfig);
+        const sqlQuery = `
+        SELECT * FROM Account WHERE phone_number = @phone_number;
+        `;
+
+        const request = connection.request();
+        request.input('phone_number', sql.VarChar, phone_number);
+        const result = await request.query(sqlQuery);
+  
+        connection.close();
+        
+        if (result.recordset.length > 0) {
+          const user = result.recordset[0];
+          return new Account(user.account_id, user.firstname, user.lastname, user.email, user.phone_number, user.password, user.role
+            , user.recurring_donation_amount
+          );
+        } else {
+          return null;
+        }
+      } catch (error) {
+        throw new Error('Error fetching user by phone number');
+      }
+    }
+
     // Method to create a new user
     static async createUser(firstname, lastname, email, phone_number, password) {
       try {
         const connection = await sql.connect(dbConfig);
         const sqlQuery = `
         INSERT INTO Account (firstname, lastname, email, phone_number, password, role)
-                      VALUES (@firstname, @lastname, @email, @phone_number, @password, @role);
+                      VALUES (@firstname, @lastname, @email, @phone_number, @password, 'User');
                       SELECT SCOPE_IDENTITY() AS account_id;
         `;
 
@@ -86,15 +109,21 @@ class Account {
         request.input('lastname', sql.VarChar, lastname);
         request.input('email', sql.VarChar, email);
         request.input('phone_number', sql.VarChar, phone_number);
-        request.input('password', sql.VarChar, password); // password hashing to be implemented later
-        request.input('role', sql.VarChar, 'User');
+        request.input('password', sql.VarChar, password);
         const result = await request.query(sqlQuery);
+
+        const account_id = result.recordset[0].account_id;
   
         connection.close();
 
-        const account_id = result.recordset[0].account_id;
-        const newAccount = new Account(account_id, firstname, lastname, email, phone_number, password, 'User');
-        return newAccount;
+        return {
+          account_id,
+          firstname,
+          lastname,
+          email,
+          phone_number,
+          role: 'User'
+      };
       } catch (error) {
           if (error.code === 'EREQUEST' && error.originalError.info.message.includes('Violation of UNIQUE KEY constraint')) {
               throw new Error('Email or phone number already in use');

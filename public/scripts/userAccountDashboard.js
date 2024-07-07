@@ -15,10 +15,12 @@ if (!user) {
     document.getElementById("user-lastname").textContent = user.lastname;
     document.getElementById("user-email").textContent = user.email;
     document.getElementById("user-phone").textContent = user.phone_number;
+
+    //remove password edit
     document.getElementById("user-password").textContent = "********"; // Hide password by default
     // Populate user role here?
 
-    // Handle password visibility toggle
+    // Handle password visibility toggle - remove this
     document.getElementById("toggle-password").addEventListener("click", function () {
         const passwordSpan = document.getElementById("user-password");
         if (passwordSpan.textContent === "********") {
@@ -103,8 +105,31 @@ if (!user) {
         })
         .catch((error) => console.error("Error fetching user details:", error));
 
-    // Fetch user donations and events sign up - Not done, to be implemented later:
-    // Fetch user donations
+    // Fetch user donations - Not done, to be implemented later: fetch(`/donations/${user.account_id}`)
 
     // Fetch user events sign up
+    fetch(`/eventSignUp/${user.account_id}`)
+    .then(response => response.json())
+    .then(data => {
+        console.log('Event sign-ups data:', data); // Debugging: log the event sign-ups data
+
+        const eventsList = document.getElementById("events-list");
+        if (data.length === 0) {
+            const noEventsMessage = document.createElement("p");
+            noEventsMessage.textContent = "No events signed up.";
+            eventsList.appendChild(noEventsMessage);
+        } else {
+            data.forEach(eventSignUp => {
+                const li = document.createElement("li");
+                const eventDate = new Date(eventSignUp.signup_date);
+                if (!isNaN(eventDate)) {
+                    li.textContent = `${eventSignUp.event_title}: you signed up on ${eventDate.toLocaleString()}`;
+                } else {
+                    li.textContent = `${eventSignUp.event_title}: you signed up on Invalid Date (error)`;
+                }
+                eventsList.appendChild(li);
+            });
+        }
+    })
+    .catch(error => console.error("Error fetching event sign ups:", error));
 }
