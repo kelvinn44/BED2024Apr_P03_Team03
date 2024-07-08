@@ -69,4 +69,26 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+async function fetchDonations() {
+    try {
+        const response = await fetch('http://localhost:3000/api/donations');
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const donations = await response.json();
 
+        const donationList = document.getElementById('donation-list');
+        donationList.innerHTML = ''; // Clear existing list items
+
+        donations.forEach(donation => {
+            const listItem = document.createElement('li');
+            listItem.textContent = `${donation.firstname} donated $${donation.amount}`;
+            donationList.appendChild(listItem);
+        });
+    } catch (error) {
+        console.error('Error fetching donations:', error);
+    }
+}
+
+// Fetch donations when the page loads
+window.onload = fetchDonations;
