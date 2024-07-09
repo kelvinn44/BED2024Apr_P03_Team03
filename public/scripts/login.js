@@ -59,7 +59,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         if (data.message === 'Login successful') {
             if ((loginType === 'user' && data.user.role !== 'User') || 
                 (loginType === 'staff' && data.user.role !== staffRole)) {
-                alert(`Role mismatch! Please log in as ${data.user.role}.`);
+                alert(`Role mismatch! Please log in as ${data.user.role}.`); //remove/say invalid credentials
             } else {
                 alert(`Login successful!\nWelcome back ${data.user.firstname}`);
                 localStorage.setItem('user', JSON.stringify(data.user));

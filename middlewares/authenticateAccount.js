@@ -9,17 +9,20 @@ function verifyJWT(req, res, next) {
 
   jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decoded) => {
     if (err) {
-      return res.status(403).json({ message: "Forbidden" });
+      return res.status(403).json({ message: "Forbidden. Token verification failed." });
     }
+
+    console.log('Decoded user information:', decoded); //log
 
     // Check user role for authorization
     const authorizedRoles = {
     //ROUTES TO BE CHECKED (TBD):
 
-      "/user/:id": ["User", "EventAdmin", "ForumMod"], // User details can be accessed by Users, EventAdmins, and ForumMods
+      "GET /user/:id": ["User", "EventAdmin", "ForumMod"], // User details can be accessed by Users, EventAdmins, and ForumMods
       //"/events/:id": ["EventAdmin"], // Specific event details can be accessed by EventAdmins only
-      "/eventSignUp/:id": ["User", "EventAdmin"], // Event signups by account ID can be accessed by Users and EventAdmins
-      "/eventSignUp": ["User"], // Creating event signups can be done by Users
+      // "POST /addEvents": ["EventAdmin"], // Creating events can be done by EventAdmins only
+      "GET /eventSignUp/:id": ["User", "EventAdmin"], // Event signups by account ID can be accessed by Users and EventAdmins
+      "POST /eventSignUp": ["User"], // Creating event signups can be done by Users
       //"/donations": ["User", "EventAdmin"], // Donations list can be accessed by Users and EventAdmins
       //"/posts": ["User", "EventAdmin", "ForumMod"], // Forum posts can be accessed by Users, EventAdmins, and ForumMods
       //"/posts/:id": ["User", "EventAdmin", "ForumMod"], // Specific forum post details can be accessed by Users, EventAdmins, and ForumMods
@@ -36,7 +39,7 @@ function verifyJWT(req, res, next) {
     );
 
     if (!authorizedRole) {
-      return res.status(403).json({ message: "Forbidden" });
+      return res.status(403).json({ message: "Forbidden. Insufficient permissions." });
     }
 
     req.user = decoded; // Attach decoded user information to the request object

@@ -48,7 +48,7 @@ app.get("/events", eventsController.getAllEvents);
 app.get("/events/:id", eventsController.getEventById);
 
 // route to create events - Aaron's function:
-app.post("/events", eventsController.createEvent);
+app.post("/addEvents", eventsController.createEvent);
 
 // route to update events - Aaron's function:
 app.put("/events/:id", eventsController.updateEvent);

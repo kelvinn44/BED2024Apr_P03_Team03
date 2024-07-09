@@ -29,7 +29,7 @@ const getEventById = async (req, res) => {
 // Function to create event
 const createEvent = async (req, res) => {
   const newEvent = req.body;
-  const accountId = req.body.account_id;
+  const accountId = req.body.id;
 
   try {
     const createdEvent = await Event.createEvent(newEvent, accountId);

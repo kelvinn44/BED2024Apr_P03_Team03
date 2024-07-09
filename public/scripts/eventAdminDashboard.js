@@ -20,18 +20,34 @@ document.addEventListener('DOMContentLoaded', function() {
 // Create an event after all event details are entered
 document.getElementById('add-event-form').addEventListener('submit', function(event) {
     event.preventDefault();
-    const accountId = JSON.parse(localStorage.getItem("account_id"));
-    let title = document.getElementById('event-title').value;
-    let description = document.getElementById('event-description').value;
-    let date = document.getElementById('event-date').value;
-    let location = document.getElementById('event-location').value;
 
-    fetch('/events', {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const accountId = user.account_id; // Get account ID from the stored user data
+    const event_title = document.getElementById('event-title').value;
+    const description = document.getElementById('event-description').value;
+    const event_date = document.getElementById('event-date').value;
+    const event_time = document.getElementById('event-time').value;
+    const location = document.getElementById('event-location').value;
+
+    // Combine date and time, and adjust to Singapore time (UTC+8)
+    const dateTimeString = `${event_date}T${event_time}:00+08:00`;
+    const eventDateTime = new Date(dateTimeString).toISOString();
+
+    const eventData = {
+        account_id: accountId,
+        event_title: event_title,
+        description: description,
+        event_date: eventDateTime,
+        location: location
+    };
+
+    fetch('/addEvents', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            //'Authorization': `Bearer ${localStorage.getItem('token')}` // Add JWT token to the headers
         },
-        body: JSON.stringify({ title, description, date, location, accountId })
+        body: JSON.stringify(eventData)
     })
     .then(response => {
         if (!response.ok) {
@@ -41,21 +57,21 @@ document.getElementById('add-event-form').addEventListener('submit', function(ev
     })
     .then(data => {
         if (data) {
-            localStorage.setItem('event', JSON.stringify(data));
             alert("Added event successfully!");
             document.getElementById('add-event-form').reset();
             displayEvents(); // Refresh the events list
         } else {
-            console.error("User data not found in server response.");
-            alert("Sign up failed: User data not found in server response.");
+            console.error("Event data not found in server response.");
+            alert("Failed to add event. Please try again.");
         }
     })
     .catch(error => {
-        let errorMessage = error.message || "An error occurred while adding event. Please try again later.";
+        const errorMessage = error.message || "An error occurred while adding event. Please try again later.";
         alert("You have failed to add an event: " + errorMessage + "\nPlease try again.");
         console.error('Error:', error);
     });
 });
+
 
 // Get all events and display them in the current events container
 function displayEvents() {
@@ -84,7 +100,7 @@ function displayEvents() {
                 // Populate the modal with event details
                 document.getElementById('edit-event-id').value = event.event_id;
                 document.getElementById('edit-event-title').value = event.event_title;
-                document.getElementById('edit-event-description').value = event.event_description;
+                document.getElementById('edit-event-description').value = event.description;
                 document.getElementById('edit-event-date').value = event.event_date;
                 document.getElementById('edit-event-location').value = event.event_location;
 
