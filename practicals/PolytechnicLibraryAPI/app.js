@@ -1,5 +1,7 @@
 const express = require("express");
 require("dotenv").config(); // Load environment variables from a .env file
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger-output.json"); // Import generated spec
 const booksController = require("./controllers/booksController");
 const sql = require("mssql");
 const dbConfig = require("./dbConfig");
@@ -19,6 +21,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true })); // For form data handling
 
 app.use(staticMiddleware); // Mount the static middleware
+
+// Serve the Swagger UI at a specific route
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.post("/register", usersController.registerUser); // User registration
 app.post("/login", usersController.login); // User login
