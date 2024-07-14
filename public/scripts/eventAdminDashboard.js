@@ -149,6 +149,51 @@ async function deleteEvent(eventId) {
     return response.ok;
 }
 
+// Add event listener for the edit event form submission
+document.getElementById('edit-event-form').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const eventId = document.getElementById('edit-event-id').value;
+    const event_title = document.getElementById('edit-event-title').value;
+    const description = document.getElementById('edit-event-description').value;
+    const event_date = document.getElementById('edit-event-date').value;
+    const event_time = document.getElementById('edit-event-time').value;
+    const location = document.getElementById('edit-event-location').value;
+
+    const dateTimeString = `${event_date}T${event_time}:00+08:00`;
+    const eventDateTime = new Date(dateTimeString).toISOString();
+
+    const updatedEventData = {
+        event_title: event_title,
+        description: description,
+        event_date: eventDateTime,
+        location: location
+    };
+
+    try {
+        const response = await fetch(`/events/${eventId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedEventData)
+        });
+
+        if (response.ok) {
+            alert('Event updated successfully!');
+            const editEventModal = bootstrap.Modal.getInstance(document.getElementById('editEventModal'));
+            editEventModal.hide();
+            displayEvents();
+        } else {
+            alert('Failed to update event. Please try again.');
+            console.error('Failed to update event:', response.statusText);
+        }
+    } catch (error) {
+        alert('An error occurred while updating event. Please try again.');
+        console.error('Error:', error);
+    }
+});
+
   
   
   

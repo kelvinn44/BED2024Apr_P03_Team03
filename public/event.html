@@ -31,43 +31,29 @@
     <div class="content">
       <h1>Events</h1>
 
-      <!-- change it to be dynamic with DB using your backend code -->
       <div class="container mt-4">
-        <div class="event-box">
-          <div class="event-title">Event Title 1</div>
-          <div class="event-date">Date: June 20, 2024</div>
-          <div class="event-time">Time: 10:00 AM - 2:00 PM</div>
-          <div class="event-location">Location: Central Park, NYC</div>
-          <div class="event-description">
-            Join us for a fun-filled day at Central Park with various activities
-            and performances.
-          </div>
-          <button class="sign-up-button">Click to Sign Up</button>
-        </div>
+        <!-- Events will be dynamically inserted here by event.js -->
+      </div>
 
-        <div class="event-box">
-          <div class="event-title">Event Title 2</div>
-          <div class="event-date">Date: June 22, 2024</div>
-          <div class="event-time">Time: 1:00 PM - 5:00 PM</div>
-          <div class="event-location">Location: Downtown Convention Center</div>
-          <div class="event-description">
-            Attend our annual convention with keynote speakers, workshops, and
-            networking opportunities.
-          </div>
-          <button class="sign-up-button">Click to Sign Up</button>
-        </div>
-
-        <div class="event-box">
-          <div class="event-title">Event Title 3</div>
-          <div class="event-date">Date: June 25, 2024</div>
-          <div class="event-time">Time: 9:00 AM - 12:00 PM</div>
-          <div class="event-location">Location: City Library</div>
-          <div class="event-description">
-            A morning of book readings and discussions with local authors.
-            Coffee and snacks provided.
-          </div>
-          <button class="sign-up-button">Click to Sign Up</button>
-        </div>
+      <div class="signup-container" style="display:none;">
+        <h1>Event Signup Form</h1>
+        <form id="signup-form">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+            <div class="submit-group">
+                <button type="submit">Submit</button>
+            </div>
+        </form>
       </div>
     </div>
 
@@ -80,5 +66,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="scripts/accountSession.js"></script>
+    <script src="scripts/event.js"></script> 
   </body>
 </html>
+

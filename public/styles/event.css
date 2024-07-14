@@ -83,6 +83,51 @@ body {
     background-color: #0056b3;
 }
 
+.signup-container {
+    width: 50%;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 5px;
+}
+.form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+label {
+    width: 120px;
+    font-weight: bold;
+    color: #333;
+    margin-right: 10px;
+}
+input[type="text"], input[type="email"], input[type="tel"] {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+.submit-group {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.submit-group button {
+    padding: 10px 20px;
+    font-size: 1em;
+    color: #fff;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+.submit-group button:hover {
+    background-color: #0056b3;
+}
+
 /* footer css */
 .footer-custom {
     background-color: #1F262D;

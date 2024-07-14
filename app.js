@@ -13,6 +13,7 @@ const donationController = require('./controllers/donationController'); // Anne 
 const forumController = require('./controllers/forumController'); // Natalie's function
 const validateUser = require("./middlewares/validateUserSignup");
 const authenticateAccount = require('./middlewares/authenticateAccount');
+const validateEvent = require('./middlewares/validateEvent');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -48,7 +49,7 @@ app.get("/events", eventsController.getAllEvents);
 app.get("/events/:id", eventsController.getEventById);
 
 // route to create events - Aaron's function:
-app.post("/addEvents", eventsController.createEvent);
+app.post("/addEvents", validateEvent, eventsController.createEvent);
 
 // route to update events - Aaron's function:
 app.put("/events/:id", eventsController.updateEvent);
