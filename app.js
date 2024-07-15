@@ -69,6 +69,12 @@ app.get("/donations", donationController.getDonations);
 // route to create a donation - Anne Marie's function:
 app.post("/donations", donationController.createDonation);
 
+//route to get all donations - Anne Marie's function:
+app.get("/donations", donationController.getAllDonations);
+
+//route to get donations by account id - Anne Marie's function:
+app.get("/donations/:id", donationController.getDonationsByAccountId);
+
 //route to get all posts - Natalie's function:
 app.get("/posts", forumController.getAllPosts);
 
