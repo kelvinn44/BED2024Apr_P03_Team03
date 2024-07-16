@@ -19,12 +19,14 @@ function verifyJWT(req, res, next) {
     //ROUTES TO BE CHECKED (TBD):
 
       "GET /user/:id": ["User", "EventAdmin", "ForumMod"], // User details can be accessed by Users, EventAdmins, and ForumMods
+      "PUT /user/:id": ["User"], // Updating user details can be done by Users
+      "GET /eventSignUp/:id": ["User", "EventAdmin"], // Event signups by account ID can be accessed by Users and EventAdmins
       //"/events/:id": ["EventAdmin"], // Specific event details can be accessed by EventAdmins only
       // "POST /addEvents": ["EventAdmin"], // Creating events can be done by EventAdmins only
-      "GET /eventSignUp/:id": ["User", "EventAdmin"], // Event signups by account ID can be accessed by Users and EventAdmins
-      "POST /eventSignUp": ["User"], // Creating event signups can be done by Users
-      //"/donations": ["User", "EventAdmin"], // Donations list can be accessed by Users and EventAdmins
-      //"/posts": ["User", "EventAdmin", "ForumMod"], // Forum posts can be accessed by Users, EventAdmins, and ForumMods
+      //"GET /eventSignUp/:id": ["User", "EventAdmin"], // Event signups by account ID can be accessed by Users and EventAdmins
+      
+      // TO BE UPDATED
+      //"POST /posts": ["User", "EventAdmin", "ForumMod"], // Forum posts can be accessed by Users, EventAdmins, and ForumMods
       //"/posts/:id": ["User", "EventAdmin", "ForumMod"], // Specific forum post details can be accessed by Users, EventAdmins, and ForumMods
     };
 

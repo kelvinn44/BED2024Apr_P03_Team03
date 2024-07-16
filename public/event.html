@@ -28,34 +28,41 @@
       </div>
   </nav>
 
-    <div class="content">
-      <h1>Events</h1>
+  <div class="container mt-5">
+    <h1>Events</h1>
 
-      <div class="container mt-4">
-        <!-- Events will be dynamically inserted here by event.js -->
-      </div>
-
-      <div class="signup-container" style="display:none;">
-        <h1>Event Signup Form</h1>
-        <form id="signup-form">
-            <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" id="name" name="name" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="phone">Phone Number</label>
-                <input type="tel" id="phone" name="phone" required>
-            </div>
-            <div class="submit-group">
-                <button type="submit">Submit</button>
-            </div>
-        </form>
-      </div>
+    <div class="container mt-4">
+      <!-- Events will be dynamically inserted here by event.js -->
     </div>
+
+    <div class="signup-container" style="display:none;">
+      <h1>Event Signup Form</h1>
+      <form id="signup-form">
+          <div class="form-group">
+              <label for="event-title">Event Title</label>
+              <input type="text" id="event-title" name="event-title" readonly>
+              <small class="form-text">This field cannot be changed.</small>
+          </div>
+          <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" id="name" name="name" required>
+              <small class="form-text">Enter your first and last name, e.g., "John Doe".</small>
+          </div>
+          <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" required>
+          </div>
+          <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" name="phone" required>
+          </div>
+          <div class="submit-group">
+              <button type="submit">Submit</button>
+              <button type="button" id="close-button">Close</button>
+          </div>
+      </form>
+    </div>
+  </div>
 
     <footer class="footer-custom">
       <div class="text-center py-3">
