@@ -36,7 +36,6 @@
             <p><strong>Last Name:</strong> <span id="user-lastname"></span></p>
             <p><strong>Email:</strong> <span id="user-email"></span></p>
             <p><strong>Phone Number:</strong> <span id="user-phone"></span></p>
-            <p><strong>Password:</strong> <span id="user-password"></span> <button class="btn btn-secondary btn-sm" id="toggle-password">Show</button></p>
             <button class="btn btn-primary btn-block" id="edit-account">Edit Account</button>
             <button class="btn btn-primary btn-block" id="logout">Log Out</button>
         </div>
@@ -60,7 +59,6 @@
                     <label for="edit-phone" class="form-label">Phone Number</label>
                     <input type="text" class="form-control" id="edit-phone" required>
                 </div>
-                <!-- remove this -->
                 <div class="mb-3">
                     <label for="edit-password" class="form-label">Password</label>
                     <input type="password" class="form-control" id="edit-password" required>
@@ -73,12 +71,12 @@
         <div class="mt-5">
             <h3>Past & Recurring Donations</h3>
             <p id="recurring-donation-message">You have a <span id="recurring-donation-amount"></span>/mth recurring donation, to update please visit <a href="donation.html">Donate</a></p>
-            <ul id="donations-list"></ul>
+            <ol id="donations-list"></ol>
         </div>
 
         <div class="mt-5">
             <h3>Events Registered</h3>
-            <ul id="events-list"></ul>
+            <ol id="events-list"></ol>
         </div>
     </div>
     </div>

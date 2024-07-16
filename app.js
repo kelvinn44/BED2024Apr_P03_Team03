@@ -64,7 +64,7 @@ app.get("/eventSignUp/:id", eventSignUpController.getEventSignUpByAccId);
 app.post("/eventSignUp", authenticateAccount, eventSignUpController.createEventSignUp);
 
 // route to get latest donations - Anne Marie's function:
-app.get("/donations", donationController.getDonations);
+app.get("/latestDonations", donationController.getDonations);
 
 // route to create a donation - Anne Marie's function:
 app.post("/donations", donationController.createDonation);

@@ -16,22 +16,6 @@ if (!user) {
     document.getElementById("user-email").textContent = user.email;
     document.getElementById("user-phone").textContent = user.phone_number;
 
-    //remove password edit
-    document.getElementById("user-password").textContent = "********"; // Hide password by default
-    // Populate user role here?
-
-    // Handle password visibility toggle - remove this
-    document.getElementById("toggle-password").addEventListener("click", function () {
-        const passwordSpan = document.getElementById("user-password");
-        if (passwordSpan.textContent === "********") {
-            passwordSpan.textContent = user.password;
-            this.textContent = "Hide";
-        } else {
-            passwordSpan.textContent = "********";
-            this.textContent = "Show";
-        }
-    });
-
     // Handle logout
     document.getElementById("logout").addEventListener("click", (event) => {
         event.preventDefault();
@@ -50,7 +34,6 @@ if (!user) {
         document.getElementById("edit-lastname").value = user.lastname;
         document.getElementById("edit-email").value = user.email;
         document.getElementById("edit-phone").value = user.phone_number;
-        document.getElementById("edit-password").value = user.password;
     });
 
     // Handle cancel edit
@@ -75,7 +58,8 @@ if (!user) {
         fetch(`/user/${user.account_id}`, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                //'Authorization': `Bearer ${localStorage.getItem('jwt_token')}` // Add JWT token to the headers
             },
             body: JSON.stringify(updatedUser)
         })
@@ -105,14 +89,44 @@ if (!user) {
         })
         .catch((error) => console.error("Error fetching user details:", error));
 
-    // Fetch user donations - Not done, to be implemented later: fetch(`/donations/${user.account_id}`)
+    // Fetch user donations
+    fetch(`/donations/${user.account_id}`)
+        .then((response) => response.json())
+        .then((data) => {
+            const donationsList = document.getElementById("donations-list");
+            let totalAmount = 0;
+
+            // Sort donations by date in descending order
+            data.sort((a, b) => new Date(b.donation_date) - new Date(a.donation_date));
+
+            if (data.length === 0) {
+                const noDonationsMessage = document.createElement("p");
+                noDonationsMessage.textContent = "No donations found.";
+                donationsList.appendChild(noDonationsMessage);
+            } else {
+                data.forEach((donation) => {
+                    totalAmount += donation.amount;
+                    const li = document.createElement("li");
+                    const donationDate = new Date(donation.donation_date);
+                    const formattedDate = donationDate.toLocaleDateString('en-GB');
+                    const formattedTime = donationDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                    li.textContent = `Donation ID: ${donation.donation_id}, Amount: $${donation.amount.toFixed(2)}, Date: ${formattedDate} @ ${formattedTime}`;
+                    donationsList.appendChild(li);
+                });
+
+                // Display total amount donated
+                const totalAmountElement = document.createElement("p");
+                totalAmountElement.innerHTML = `<b>Total One-Time Donation Amount Made: $${totalAmount.toFixed(2)}</b>`;
+                donationsList.appendChild(totalAmountElement);
+            }
+        })
+        .catch((error) => console.error("Error fetching donations:", error));
 
     // Fetch user events sign up
     fetch(`/eventSignUp/${user.account_id}`)
     .then(response => response.json())
     .then(data => {
-        console.log('Event sign-ups data:', data); // Debugging: log the event sign-ups data
-
         const eventsList = document.getElementById("events-list");
         if (data.length === 0) {
             const noEventsMessage = document.createElement("p");
@@ -122,8 +136,10 @@ if (!user) {
             data.forEach(eventSignUp => {
                 const li = document.createElement("li");
                 const eventDate = new Date(eventSignUp.signup_date);
+                const formattedDate = eventDate.toLocaleDateString('en-GB');
+                const formattedTime = eventDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                 if (!isNaN(eventDate)) {
-                    li.textContent = `${eventSignUp.event_title}: you signed up on ${eventDate.toLocaleString()}`;
+                    li.textContent = `${eventSignUp.event_title}: you signed up on ${formattedDate} @ ${formattedTime}`;
                 } else {
                     li.textContent = `${eventSignUp.event_title}: you signed up on Invalid Date (error)`;
                 }
