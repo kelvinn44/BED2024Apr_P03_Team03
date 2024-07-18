@@ -177,6 +177,7 @@ class User {
         SELECT *
         FROM Users
         WHERE username LIKE '%${searchTerm}%'
+        OR role LIKE '%${searchTerm}%'
       `;
 
       const result = await connection.request().query(query);
@@ -193,10 +194,10 @@ class User {
 
     try {
       const query = `
-        SELECT u.user_id AS user_id, u.username, u.role, b.id AS book_id, b.title, b.author
+        SELECT u.user_id, u.username, u.role, b.book_id, b.title, b.author, b.availability
         FROM Users u
         LEFT JOIN UserBooks ub ON ub.user_id = u.user_id
-        LEFT JOIN Books b ON ub.book_id = b.id
+        LEFT JOIN Books b ON ub.book_id = b.book_id
         ORDER BY u.username;
       `;
 
@@ -218,6 +219,7 @@ class User {
           id: row.book_id,
           title: row.title,
           author: row.author,
+          availability: row.availability,
         });
       }
 

@@ -21,7 +21,28 @@ async function createDonation(req, res) {
     }
 };
 
+async function getAllDonations(req, res) {
+    try {
+        const donations = await Donation.getAllDonations();
+        res.json(donations);
+    } catch (error) {
+        res.status(500).send('Server error');
+    }
+};
+
+async function getDonationsByAccountId(req, res) {
+    const { id } = req.params;
+    try {
+        const donations = await Donation.getDonationsByAccountId(id);
+        res.json(donations);
+    } catch (error) {
+        res.status(500).send('Server error');
+    }
+};
+
 module.exports = {
     getDonations,
     createDonation,
+    getAllDonations,
+    getDonationsByAccountId
 };
