@@ -31,9 +31,9 @@ async function getAllDonations(req, res) {
 };
 
 async function getDonationsByAccountId(req, res) {
-    const { account_id } = req.params;
+    const { id } = req.params;
     try {
-        const donations = await Donation.getDonationsByAccountId(account_id);
+        const donations = await Donation.getDonationsByAccountId(id);
         res.json(donations);
     } catch (error) {
         res.status(500).send('Server error');

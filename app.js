@@ -61,10 +61,10 @@ app.delete("/events/:id", eventsController.deleteEvent);
 app.get("/eventSignUp/:id", eventSignUpController.getEventSignUpByAccId);
 
 // route to create event sign ups
-app.post("/eventSignUp", authenticateAccount, eventSignUpController.createEventSignUp);
+app.post("/eventSignUp", eventSignUpController.createEventSignUp);
 
 // route to get latest donations - Anne Marie's function:
-app.get("/donations", donationController.getDonations);
+app.get("/latestDonations", donationController.getDonations);
 
 // route to create a donation - Anne Marie's function:
 app.post("/donations", donationController.createDonation);
