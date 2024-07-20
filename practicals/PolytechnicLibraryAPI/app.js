@@ -38,6 +38,8 @@ app.get("/users/with-books", usersController.getUsersWithBooks);
 
 // Routes for GET requests (replace with appropriate routes for update and delete later)
 app.get("/books", authorizeUser, booksController.getAllBooks);
+// app.get("/books", booksController.getAllBooks); //for jest testing (practical week 14)
+
 app.get("/books/:id", booksController.getBookById);
 app.post("/books", validateBook, booksController.createBook); // POST for creating books (can handle JSON data)
 app.put("/books/:id", validateBook, booksController.updateBook); // PUT for updating books
@@ -45,6 +47,7 @@ app.delete("/books/:id", booksController.deleteBook); // DELETE for deleting boo
 
 // New route for updating availability
 app.put("/books/:bookId/availability", authorizeUser, bookController.updateAvailability);
+// app.put("/books/:bookId/availability", bookController.updateAvailability); //for jest testing (practical week 14)
 
 //app.post("/users", usersController.createUser); // Create user - previous practical
 
