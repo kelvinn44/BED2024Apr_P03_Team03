@@ -1,6 +1,6 @@
 const Joi = require("joi");
 
-const validateUser = (req, res, next) => {
+const validateUserForum = (req, res, next) => {
   const schema = Joi.object({
     title: Joi.string().min(1).max(50).required(),
     content: Joi.string().min(1).max(250).required(),
@@ -18,4 +18,4 @@ const validateUser = (req, res, next) => {
   next(); // If validation passes, proceed to the next route handler
 };
 
-module.exports = validateUser;
+module.exports = validateUserForum;

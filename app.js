@@ -15,6 +15,8 @@ const validateUser = require("./middlewares/validateUserSignup");
 const authenticateAccount = require('./middlewares/authenticateAccount');
 const validateEvent = require('./middlewares/validateEvent');
 
+const Forum = require("./models/forum");
+
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -89,6 +91,27 @@ app.put("/posts/:id", forumController.updatePost);
 
 //route to delete a post - Natalie's function:
 app.delete("/posts/:id", forumController.deletePost);
+
+//route for nats api
+app.get('/api/posts', async (req, res) => {
+  try {
+    const posts = await Forum.getAllPosts();
+    res.json(posts);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching posts' });
+  }
+});
+
+app.post('/api/posts', async (req, res) => {
+  try {
+    const { title, content } = req.body;
+    const accountId = req.user.accountId; // Ensure req.user contains the logged in user information
+    const postId = await Forum.createPost({ title, content }, accountId);
+    res.json({ postId });
+  } catch (error) {
+    res.status(500).json({ message: 'Error creating post' });
+  }
+});
 
 
 
