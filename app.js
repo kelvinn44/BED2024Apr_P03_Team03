@@ -13,6 +13,7 @@ const donationController = require('./controllers/donationController'); // Anne 
 const forumController = require('./controllers/forumController'); // Natalie's function
 const validateUser = require("./middlewares/validateUserSignup");
 const authenticateAccount = require('./middlewares/authenticateAccount');
+const validateEvent = require('./middlewares/validateEvent');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -48,7 +49,7 @@ app.get("/events", eventsController.getAllEvents);
 app.get("/events/:id", eventsController.getEventById);
 
 // route to create events - Aaron's function:
-app.post("/addEvents", eventsController.createEvent);
+app.post("/addEvents", validateEvent, eventsController.createEvent);
 
 // route to update events - Aaron's function:
 app.put("/events/:id", eventsController.updateEvent);
@@ -60,13 +61,19 @@ app.delete("/events/:id", eventsController.deleteEvent);
 app.get("/eventSignUp/:id", eventSignUpController.getEventSignUpByAccId);
 
 // route to create event sign ups
-app.post("/eventSignUp", authenticateAccount, eventSignUpController.createEventSignUp);
+app.post("/eventSignUp", eventSignUpController.createEventSignUp);
 
 // route to get latest donations - Anne Marie's function:
-app.get("/donations", donationController.getDonations);
+app.get("/latestDonations", donationController.getDonations);
 
 // route to create a donation - Anne Marie's function:
 app.post("/donations", donationController.createDonation);
+
+//route to get all donations - Anne Marie's function:
+app.get("/donations", donationController.getAllDonations);
+
+//route to get donations by account id - Anne Marie's function:
+app.get("/donations/:id", donationController.getDonationsByAccountId);
 
 //route to get all posts - Natalie's function:
 app.get("/posts", forumController.getAllPosts);

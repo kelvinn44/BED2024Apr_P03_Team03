@@ -65,6 +65,44 @@
         </div>                                           
     </div>
 
+
+    <!-- Edit Event Modal -->
+    <div class="modal fade" id="editEventModal" tabindex="-1" aria-labelledby="editEventModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="editEventModalLabel">Edit Event</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <form id="edit-event-form">
+                <input type="hidden" id="edit-event-id" name="event-id">
+                
+                <label for="edit-event-title">Event Title</label>
+                <input type="text" id="edit-event-title" name="event-title" required>
+                
+                <label for="edit-event-description">Event Details and Description</label>
+                <textarea id="edit-event-description" name="event-description" rows="5" required></textarea>
+                
+                <label for="edit-event-date">Event Date</label>
+                <input type="date" id="edit-event-date" name="event-date" required>
+                
+                <br>
+                <label for="edit-event-time">Event Time</label>
+                <input type="time" id="edit-event-time" name="event-time" required>
+                
+                <br>
+                <label for="edit-event-location">Event Location</label>
+                <input type="text" id="edit-event-location" name="event-location" required>
+                
+                <button type="submit" class="btn btn-primary">Update Event</button>
+            </form>
+            </div>
+        </div>
+        </div>
+    </div>
+  
+
     <footer class="footer-custom">
         <div class="text-center py-3">
             <p>&copy; 2024 Willing Hearts | Email: <a href="mailto:contact@willinghearts.org">contact@willinghearts.org</a> | Call: <a href="tel:+6588889999">+65 8888 9999</a></p>

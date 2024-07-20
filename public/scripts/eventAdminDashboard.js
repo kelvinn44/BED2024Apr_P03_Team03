@@ -45,7 +45,7 @@ document.getElementById('add-event-form').addEventListener('submit', function(ev
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            //'Authorization': `Bearer ${localStorage.getItem('token')}` // Add JWT token to the headers
+            //'Authorization': `Bearer ${localStorage.getItem('jwt_token')}` // Add JWT token to the headers
         },
         body: JSON.stringify(eventData)
     })
@@ -71,7 +71,6 @@ document.getElementById('add-event-form').addEventListener('submit', function(ev
         console.error('Error:', error);
     });
 });
-
 
 // Get all events and display them in the current events container
 function displayEvents() {
@@ -101,8 +100,11 @@ function displayEvents() {
                 document.getElementById('edit-event-id').value = event.event_id;
                 document.getElementById('edit-event-title').value = event.event_title;
                 document.getElementById('edit-event-description').value = event.description;
-                document.getElementById('edit-event-date').value = event.event_date;
-                document.getElementById('edit-event-location').value = event.event_location;
+
+                const eventDate = new Date(event.event_date);
+                document.getElementById('edit-event-date').value = eventDate.toISOString().split('T')[0]; // Set date in YYYY-MM-DD format
+                document.getElementById('edit-event-time').value = eventDate.toTimeString().split(':').slice(0, 2).join(':'); // Set time in HH:MM format
+                document.getElementById('edit-event-location').value = event.location;
 
                 // Show the modal
                 const editEventModal = new bootstrap.Modal(document.getElementById('editEventModal'));
@@ -149,7 +151,47 @@ async function deleteEvent(eventId) {
     return response.ok;
 }
 
-  
-  
-  
-  
+// Add event listener for the edit event form submission
+document.getElementById('edit-event-form').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const eventId = document.getElementById('edit-event-id').value;
+    const event_title = document.getElementById('edit-event-title').value;
+    const description = document.getElementById('edit-event-description').value;
+    const event_date = document.getElementById('edit-event-date').value;
+    const event_time = document.getElementById('edit-event-time').value;
+    const location = document.getElementById('edit-event-location').value;
+
+    const dateTimeString = `${event_date}T${event_time}:00+08:00`;
+    const eventDateTime = new Date(dateTimeString).toISOString();
+
+    const updatedEventData = {
+        event_title: event_title,
+        description: description,
+        event_date: eventDateTime,
+        location: location
+    };
+
+    try {
+        const response = await fetch(`/events/${eventId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedEventData)
+        });
+
+        if (response.ok) {
+            alert('Event updated successfully!');
+            const editEventModal = bootstrap.Modal.getInstance(document.getElementById('editEventModal'));
+            editEventModal.hide();
+            displayEvents();
+        } else {
+            alert('Failed to update event. Please try again.');
+            console.error('Failed to update event:', response.statusText);
+        }
+    } catch (error) {
+        alert('An error occurred while updating event. Please try again.');
+        console.error('Error:', error);
+    }
+});

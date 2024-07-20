@@ -21,7 +21,6 @@ GO
 CREATE TABLE Donation (
     donation_id INT IDENTITY(1,1) PRIMARY KEY,
     account_id INT NULL,
-    --firstname VARCHAR(50) NOT NULL, -- Store firstname here (for when an user account has been deleted)
     donation_date DATETIME DEFAULT SYSDATETIME(),
     amount DECIMAL(10, 2) NOT NULL,
     FOREIGN KEY (account_id) REFERENCES Account(account_id) ON DELETE SET NULL
@@ -57,7 +56,6 @@ GO
 CREATE TABLE Forum (
     post_id INT IDENTITY(1,1) PRIMARY KEY,
     account_id INT NULL,
-    --firstname VARCHAR(50) NOT NULL, -- Store firstname here (for when an user account has been deleted)
     post_date DATETIME DEFAULT GETDATE(),
     title VARCHAR(100) NOT NULL,
     content TEXT NOT NULL,
@@ -133,7 +131,7 @@ VALUES
     (6, '2024-05-18 11:10:00', 10.00),
     (5, '2024-06-22 13:55:00', 5.00),
     (1, '2024-07-10 15:35:00', 15.00),
-    (2, '2024-08-25 12:40:00', 25.00);
+    (2, '2024-07-20 12:40:00', 25.00);
 GO
 
 -- forum post examples:

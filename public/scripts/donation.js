@@ -8,25 +8,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
     donationButtons.forEach(button => {
         button.addEventListener("click", () => {
-            if (button.classList.contains("selected")) {
-                button.classList.remove("selected");
-                selectedAmount = null;
-            } else {
-                donationButtons.forEach(btn => btn.classList.remove("selected"));
-                button.classList.add("selected");
-                selectedAmount = button.getAttribute("data-amount");
-            }
+            donationButtons.forEach(btn => btn.classList.remove("selected"));
+            button.classList.add("selected");
+            selectedAmount = button.getAttribute("data-amount");
         });
     });
 
-    confirmOtdButton.addEventListener("click", () => {
-        let amount = amountInput.value.trim();
+    confirmOtdButton.addEventListener("click", async () => {
+        let amount = selectedAmount || amountInput.value.trim();
         if (amount === "" && selectedAmount !== null) {
             amount = selectedAmount;
         }
         
         if (amount !== "") {
-            showPopup(`Thank you for your $${amount} one-time donation!`);
+            const account_id = JSON.parse(localStorage.getItem('data.user.account_id'));
+            try {
+                const response = await fetch('/api/donations', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ account_id, amount })
+                });
+                const result = await response.json();
+                if (response.ok) {
+                    showPopup(`Thank you for your $${amount} one-time donation!`);
+                } else {
+                    showPopup("Error processing your donation. Please try again.");
+                }
+            } catch (error) {
+                showPopup("Error processing your donation. Please try again.");
+            }
         } else {
             showPopup("Please select or enter an amount to donate.");
         }
@@ -69,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-async function fetchDonations() {
+/*async function fetchDonations() {
     try {
         const response = await fetch('http://localhost:3000/api/donations');
         if (!response.ok) {
@@ -88,7 +100,26 @@ async function fetchDonations() {
     } catch (error) {
         console.error('Error fetching donations:', error);
     }
-}
+}*/
+
+
+async function fetchDonations() {
+    try {
+      const response = await fetch('/api/donations');
+      const donations = await response.json();
+
+      const donationList = document.getElementById('donation-list');
+      donations.forEach(donation => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `${donation.firstname} donated $${donation.amount}`;
+        donationList.appendChild(listItem);
+      });
+    } catch (error) {
+      console.error('Error loading donations:', error);
+    }
+  }
 
 // Fetch donations when the page loads
 window.onload = fetchDonations;
+
+
