@@ -6,33 +6,61 @@ document.addEventListener("DOMContentLoaded", () => {
     const amountMonthlyInput = document.getElementById("amt-monthly");
     let selectedAmount = null;
 
+    confirmOtdButton.replaceWith(confirmOtdButton.cloneNode(true));
+    confirmMonthlyButton.replaceWith(confirmMonthlyButton.cloneNode(true));
+
+    const newConfirmOtdButton = document.getElementById("confirm-otd");
+    const newConfirmMonthlyButton = document.getElementById("confirm-monthly");
+
     donationButtons.forEach(button => {
         button.addEventListener("click", () => {
             donationButtons.forEach(btn => btn.classList.remove("selected"));
             button.classList.add("selected");
             selectedAmount = button.getAttribute("data-amount");
+            amountInput.value = ''; 
         });
     });
 
-    confirmOtdButton.addEventListener("click", async () => {
-        let amount = selectedAmount || amountInput.value.trim();
-        if (amount === "" && selectedAmount !== null) {
-            amount = selectedAmount;
+    amountInput.addEventListener("input", () => {
+        if (amountInput.value.trim() !== "") {
+            donationButtons.forEach(btn => btn.classList.remove("selected"));
+            selectedAmount = null;
         }
-        
-        if (amount !== "") {
-            const account_id = JSON.parse(localStorage.getItem('data.user.account_id'));
+    });
+
+    newConfirmOtdButton.addEventListener("click", async () => {
+        let amount = selectedAmount || amountInput.value.trim();
+        if (selectedAmount && amountInput.value.trim() !== "") {
+            showPopup("Please select either a predefined amount or enter a custom amount, not both.");
+            return;
+        }
+
+        if (amount !== "" && parseFloat(amount) > 0) {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (!user) {
+                showPopup("Please log in as a user to donate.");
+                return;
+            }
+
+            if (user.role === 'EventAdmin' || user.role === 'ForumMod') {
+                showPopup("Staff members are not allowed to donate.");
+                return;
+            }
+
+            const account_id = user.account_id;
             try {
-                const response = await fetch('/api/donations', {
+                const response = await fetch('/donations', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`
                     },
                     body: JSON.stringify({ account_id, amount })
                 });
                 const result = await response.json();
                 if (response.ok) {
                     showPopup(`Thank you for your $${amount} one-time donation!`);
+                    fetchDonations();
                 } else {
                     showPopup("Error processing your donation. Please try again.");
                 }
@@ -40,17 +68,47 @@ document.addEventListener("DOMContentLoaded", () => {
                 showPopup("Error processing your donation. Please try again.");
             }
         } else {
-            showPopup("Please select or enter an amount to donate.");
+            showPopup("Please select or enter a valid amount to donate.");
         }
     });
 
-    confirmMonthlyButton.addEventListener("click", () => {
+    newConfirmMonthlyButton.addEventListener("click", async () => {
         let amount = amountMonthlyInput.value.trim();
-        
-        if (amount !== "") {
-            showMonthlyPopup(`Thank you for your $${amount} monthly recurring donation!`);
+
+        if (amount !== "" && parseFloat(amount) > 0) {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (!user) {
+                showPopup("Please log in as a user to donate.");
+                return;
+            }
+
+            if (user.role === 'EventAdmin' || user.role === 'ForumMod') {
+                showPopup("Staff members are not allowed to donate.");
+                return;
+            }
+
+            const account_id = user.account_id;
+            try {
+                const response = await fetch('/donations/recurring', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`
+                    },
+                    body: JSON.stringify({ account_id, amount })
+                });
+                const result = await response.json();
+                if (response.ok) {
+                    showMonthlyPopup(`Thank you for your $${amount} monthly recurring donation!`);
+                    fetchDonations();
+                } else {
+                    showMonthlyPopup("Error processing your donation. Please try again.");
+                }
+            } catch (error) {
+                showMonthlyPopup("Error processing your donation. Please try again.");
+            }
         } else {
-            showMonthlyPopup("Please enter an amount to donate.");
+            showMonthlyPopup("Please enter a valid amount to donate.");
         }
     });
 
@@ -79,47 +137,44 @@ document.addEventListener("DOMContentLoaded", () => {
         popupMonthlyMessage.textContent = message;
         popupMonthly.style.display = "flex";
     }
-});
 
-/*async function fetchDonations() {
-    try {
-        const response = await fetch('http://localhost:3000/api/donations');
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
+    async function fetchDonations() {
+        try {
+            const response = await fetch('/latestDonations');
+            const donations = await response.json();
+
+            const donationList = document.getElementById('donation-list');
+            donationList.innerHTML = ''; 
+
+            donations.forEach(donation => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${donation.firstname} donated $${donation.amount}`;
+                donationList.appendChild(listItem);
+            });
+        } catch (error) {
+            console.error('Error loading donations:', error);
         }
-        const donations = await response.json();
-
-        const donationList = document.getElementById('donation-list');
-        donationList.innerHTML = ''; // Clear existing list items
-
-        donations.forEach(donation => {
-            const listItem = document.createElement('li');
-            listItem.textContent = `${donation.firstname} donated $${donation.amount}`;
-            donationList.appendChild(listItem);
-        });
-    } catch (error) {
-        console.error('Error fetching donations:', error);
     }
-}*/
 
-
-async function fetchDonations() {
-    try {
-      const response = await fetch('/api/donations');
-      const donations = await response.json();
-
-      const donationList = document.getElementById('donation-list');
-      donations.forEach(donation => {
-        const listItem = document.createElement('li');
-        listItem.textContent = `${donation.firstname} donated $${donation.amount}`;
-        donationList.appendChild(listItem);
-      });
-    } catch (error) {
-      console.error('Error loading donations:', error);
+    async function fetchRecurringDonation() {
+        try {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (user) {
+                const response = await fetch(`/donations/recurring/${user.account_id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`
+                    }
+                });
+                const data = await response.json();
+                if (response.ok && data.amount) {
+                    amountMonthlyInput.value = data.amount;
+                }
+            }
+        } catch (error) {
+            console.error('Error loading recurring donation:', error);
+        }
     }
-  }
 
-// Fetch donations when the page loads
-window.onload = fetchDonations;
-
-
+    fetchDonations();
+    fetchRecurringDonation();
+});

@@ -77,8 +77,12 @@ function displayEvents() {
     fetch('/events')
     .then(response => response.json())
     .then(events => {
+        // Sort events by event_id in descending order
+        events.sort((a, b) => b.event_id - a.event_id);
+
         const currentEventsContainer = document.getElementById('current-events');
         currentEventsContainer.innerHTML = ''; // Clear previous events
+
         events.forEach(event => {
             const eventContainer = document.createElement('div');
             eventContainer.className = 'd-flex justify-content-between align-items-center mb-3';

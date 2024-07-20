@@ -1,6 +1,6 @@
 const Donation = require('../models/donation');
 
-//Function to get 5 latest donations
+// Function to get 5 latest donations
 async function getDonations(req, res) {
     try {
         const donations = await Donation.getDonations();
@@ -10,7 +10,7 @@ async function getDonations(req, res) {
     }
 };
 
-//Function to add a donation
+// Function to add a donation
 async function createDonation(req, res) {
     const { account_id, amount } = req.body;
     try {
@@ -21,6 +21,7 @@ async function createDonation(req, res) {
     }
 };
 
+// Function to get all donations
 async function getAllDonations(req, res) {
     try {
         const donations = await Donation.getAllDonations();
@@ -30,6 +31,7 @@ async function getAllDonations(req, res) {
     }
 };
 
+// Function to get donations by account ID
 async function getDonationsByAccountId(req, res) {
     const { id } = req.params;
     try {
@@ -40,20 +42,39 @@ async function getDonationsByAccountId(req, res) {
     }
 };
 
-async function updateRecurringDonation(req, res) {
-    const { donation_id, account_id, amount } = req.body;
+// Function to get recurring donation by account ID
+async function getRecurringDonation(req, res) {
+    const { id } = req.params;
     try {
-        const donation = await Donation.updateRecurringDonation(donation_id, account_id, amount);
-        res.json(donation);
+        const recurringDonation = await Donation.getRecurringDonationByAccountId(id);
+        if (recurringDonation) {
+            res.json({ amount: recurringDonation.recurring_donation_amount });
+        } else {
+            res.status(404).json({ message: 'Recurring donation not found' });
+        }
     } catch (error) {
+        console.error('Error fetching recurring donation:', error);
         res.status(500).send('Server error');
     }
-};
+}
+
+// Function to update/create recurring donation
+async function updateRecurringDonation(req, res) {
+    const { account_id, amount } = req.body;
+    try {
+        const result = await Donation.updateRecurringDonation(account_id, amount);
+        res.json({ success: true, message: 'Recurring donation updated', amount: result.amount });
+    } catch (error) {
+        console.error('Error updating recurring donation:', error);
+        res.status(500).send('Server error');
+    }
+}
 
 module.exports = {
     getDonations,
     createDonation,
     getAllDonations,
     getDonationsByAccountId,
+    getRecurringDonation,
     updateRecurringDonation
 };

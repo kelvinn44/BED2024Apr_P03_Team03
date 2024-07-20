@@ -13,9 +13,9 @@ const donationController = require('./controllers/donationController'); // Anne 
 const forumController = require('./controllers/forumController'); // Natalie's function
 const validateUser = require("./middlewares/validateUserSignup");
 const validateForum = require('./middlewares/validateForum');
-
-const authenticateAccount = require('./middlewares/authenticateAccount');
+const validateDonation = require('./middlewares/validateDonation');
 const validateEvent = require('./middlewares/validateEvent');
+const authenticateAccount = require('./middlewares/authenticateAccount');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -39,7 +39,7 @@ app.post('/signup', validateUser, accountController.createUser);
 app.post('/login', accountController.loginUser);
 
 // route to get user details - Kelvin's function:
-app.get('/user/:id', authenticateAccount, accountController.getUser);
+app.get('/user/:id', accountController.getUser);
 
 // route to update user details - Kelvin's function:
 app.put('/user/:id', accountController.updateUser);
@@ -54,22 +54,22 @@ app.get("/events/:id", eventsController.getEventById);
 app.post("/addEvents", validateEvent, eventsController.createEvent);
 
 // route to update events - Aaron's function:
-app.put("/events/:id", eventsController.updateEvent);
+app.put("/events/:id", validateEvent, eventsController.updateEvent);
 
 // route to delete events - Aaron's function:
 app.delete("/events/:id", eventsController.deleteEvent);
 
-// route to get event sign ups by account id
+// route to get event sign ups by account id - Aaron's function:
 app.get("/eventSignUp/:id", eventSignUpController.getEventSignUpByAccId);
 
-// route to create event sign ups
+// route to create event sign ups - Aaron's function:
 app.post("/eventSignUp", eventSignUpController.createEventSignUp);
 
 // route to get latest donations - Anne Marie's function:
 app.get("/latestDonations", donationController.getDonations);
 
 // route to create a donation - Anne Marie's function:
-app.post("/donations", donationController.createDonation);
+app.post("/donations", validateDonation, donationController.createDonation);
 
 //route to get all donations - Anne Marie's function:
 app.get("/donations", donationController.getAllDonations);
@@ -77,8 +77,11 @@ app.get("/donations", donationController.getAllDonations);
 //route to get donations by account id - Anne Marie's function:
 app.get("/donations/:id", donationController.getDonationsByAccountId);
 
-//route to update a recurring donation - Anne Marie's function:
-app.put("/donations/:id", donationController.updateRecurringDonation);
+//route to get a recurring donation - Anne Marie's function:
+app.get("/donations/recurring/:id", donationController.getRecurringDonation);
+
+//route to post and update (existing) a recurring donation - Anne Marie's function:
+app.post('/donations/recurring', validateDonation, donationController.updateRecurringDonation);
 
 //route to get all posts - Natalie's function:
 app.get("/posts", forumController.getAllPosts);

@@ -1,17 +1,14 @@
-// When the DOM content is fully loaded, call the fetchEvents function
 document.addEventListener('DOMContentLoaded', function() {
     fetchEvents();
 });
 
-// Function to fetch events from the server and display them
 function fetchEvents() {
     fetch('/events')
-        .then(response => response.json()) // Parse the response as JSON
+        .then(response => response.json())
         .then(events => {
             const eventsContainer = document.querySelector('.container.mt-4');
-            eventsContainer.innerHTML = ''; // Clear previous events
+            eventsContainer.innerHTML = '';
 
-            // Iterate through each event and create the necessary HTML elements
             events.forEach(event => {
                 const eventBox = document.createElement('div');
                 eventBox.className = 'event-box';
@@ -20,13 +17,24 @@ function fetchEvents() {
                 eventTitle.className = 'event-title';
                 eventTitle.textContent = event.event_title;
 
-                const eventDate = document.createElement('div');
-                eventDate.className = 'event-date';
-                eventDate.textContent = `Date: ${new Date(event.event_date).toLocaleDateString()}`;
+                const eventDate = new Date(event.event_date);
+                const eventDateSGT = new Intl.DateTimeFormat('en-GB', { 
+                    year: 'numeric', month: 'long', day: 'numeric', 
+                    timeZone: 'Asia/Singapore' 
+                }).format(eventDate);
 
-                const eventTime = document.createElement('div');
-                eventTime.className = 'event-time';
-                eventTime.textContent = `Time: ${new Date(event.event_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+                const eventTimeSGT = new Intl.DateTimeFormat('en-GB', { 
+                    hour: '2-digit', minute: '2-digit', 
+                    timeZone: 'Asia/Singapore', hour12: false 
+                }).format(eventDate);
+
+                const eventDateDiv = document.createElement('div');
+                eventDateDiv.className = 'event-date';
+                eventDateDiv.textContent = `Date: ${eventDateSGT}`;
+
+                const eventTimeDiv = document.createElement('div');
+                eventTimeDiv.className = 'event-time';
+                eventTimeDiv.textContent = `Time: ${eventTimeSGT}`;
 
                 const eventLocation = document.createElement('div');
                 eventLocation.className = 'event-location';
@@ -39,24 +47,21 @@ function fetchEvents() {
                 const signUpButton = document.createElement('button');
                 signUpButton.className = 'sign-up-button';
                 signUpButton.textContent = 'Click to Sign Up';
-                signUpButton.addEventListener('click', () => handleSignUp(event)); // Add event listener for signup
+                signUpButton.addEventListener('click', () => handleSignUp(event));
 
-                // Append all the created elements to the eventBox
                 eventBox.appendChild(eventTitle);
-                eventBox.appendChild(eventDate);
-                eventBox.appendChild(eventTime);
+                eventBox.appendChild(eventDateDiv);
+                eventBox.appendChild(eventTimeDiv);
                 eventBox.appendChild(eventLocation);
                 eventBox.appendChild(eventDescription);
                 eventBox.appendChild(signUpButton);
 
-                // Append the eventBox to the events container
                 eventsContainer.appendChild(eventBox);
             });
         })
-        .catch(error => console.error('Error fetching events:', error)); // Handle any errors during fetch
+        .catch(error => console.error('Error fetching events:', error));
 }
 
-// Function to handle event sign-up process
 function handleSignUp(event) {
     const user = JSON.parse(localStorage.getItem("user"));
     const signupContainer = document.querySelector('.signup-container');
@@ -65,13 +70,11 @@ function handleSignUp(event) {
     const closeButton = document.getElementById('close-button');
 
     if (user) {
-        // Check if the logged-in user is a staff member
         if (user.role === 'EventAdmin' || user.role === 'ForumMod') {
             alert("Staff members are not allowed to sign up for events.");
             return;
         }
 
-        // Check if the user has already signed up for this event
         fetch(`/eventSignUp/${user.account_id}`)
         .then(response => response.json())
         .then(data => {
@@ -79,7 +82,6 @@ function handleSignUp(event) {
             if (alreadySignedUp) {
                 alert('You have already signed up for this event.');
             } else {
-                // Directly sign up logged-in users without showing the form
                 const signUpData = {
                     event_id: event.event_id,
                     event_title: event.event_title,
@@ -91,12 +93,11 @@ function handleSignUp(event) {
                     account_id: user.account_id
                 };
 
-                // Send sign-up data to the server
                 fetch('/eventSignUp', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('jwt_token')}` // Ensure JWT token is sent
+                        'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`
                     },
                     body: JSON.stringify(signUpData)
                 })
@@ -115,13 +116,11 @@ function handleSignUp(event) {
             alert('Failed to check sign-up status. Please try again.');
         });
     } else {
-        // Show the signup form for non-logged-in users
         eventTitleField.value = event.event_title;
         signupContainer.style.display = 'block';
 
-        // Handle form submission for non-logged-in users
         signupForm.onsubmit = function(e) {
-            e.preventDefault(); // Prevent default form submission
+            e.preventDefault();
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const phone = document.getElementById('phone').value;
@@ -136,7 +135,6 @@ function handleSignUp(event) {
                 signup_date: new Date().toISOString()
             };
 
-            // Send sign-up data to the server
             fetch('/eventSignUp', {
                 method: 'POST',
                 headers: {
@@ -147,8 +145,8 @@ function handleSignUp(event) {
             .then(response => response.json())
             .then(data => {
                 alert('You have successfully signed up for the event!');
-                signupContainer.style.display = 'none'; // Hide the signup form
-                signupForm.reset(); // Reset the form fields
+                signupContainer.style.display = 'none';
+                signupForm.reset();
             })
             .catch(error => {
                 console.error('Error signing up for the event:', error);
@@ -156,7 +154,6 @@ function handleSignUp(event) {
             });
         };
 
-        // Handle close button click to hide the signup form
         closeButton.onclick = function() {
             signupContainer.style.display = 'none';
             signupForm.reset();
