@@ -1,27 +1,17 @@
-// Populate admin name and handle logout
-document.addEventListener('DOMContentLoaded', function() {
-    const user = JSON.parse(localStorage.getItem("user"));
+document.addEventListener('DOMContentLoaded', () => {
+    const user = JSON.parse(localStorage.getItem('user'));
     const postComposer = document.getElementById('post-composer');
     const createPostButton = document.getElementById('create-post-button');
     const closePostComposerButton = document.getElementById('close-post-composer');
     const createPostForm = document.getElementById('create-post-form');
-    
-    // Ensure create post button is hidden initially
+
+    // Hide post composer button by default
     createPostButton.style.display = 'none';
 
-    if (user && user.role === 'ForumMod') {
-        document.getElementById('admin-name').textContent = user.firstname;
+    // Show post composer button if user is logged in and not an admin or forum mod
+    if (user && user.role !== 'EventAdmin' && user.role !== 'ForumMod') {
         createPostButton.style.display = 'block';
-    } else {
-        window.location.href = "login.html";
     }
-    
-    document.getElementById("logout").addEventListener("click", (event) => {
-        event.preventDefault();
-        localStorage.removeItem("user");
-        alert("Successfully logged out!\nSee you again.");
-        window.location.href = "index.html";
-    });
 
     // Show post composer on button click
     createPostButton.addEventListener('click', () => {
@@ -41,6 +31,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function handleSubmit(event) {
         event.preventDefault();
+
+        if (user.role === 'EventAdmin' || user.role === 'ForumMod') {
+            alert('You are not allowed to post using this page. Please visit your dashboard to do that.');
+            return;
+        }
+
         const title = document.getElementById('post-title').value;
         const content = document.getElementById('post-content').value;
 
@@ -87,41 +83,34 @@ function fetchPosts() {
 
         posts.forEach(post => {
             const postDiv = document.createElement('div');
-            postDiv.className = 'post card mb-3';
-            postDiv.innerHTML = `
-                <div class="card-body">
-                    <strong>${post.firstname} - ${post.title}</strong>
-                    <p>${post.content}</p>
-                    ${user && user.role === 'ForumMod' ? `
-                    <button class="btn btn-danger btn-sm delete-post-button" data-post-id="${post.post_id}">Delete</button>
-                    ` : ''}
-                    ${user && post.account_id === user.account_id ? `
-                    <button class="btn btn-warning btn-sm me-2 edit-post-button" data-post-id="${post.post_id}">Edit</button>
-                    ` : ''}
-                </div>
-            `;
+            postDiv.className = 'post';
+
+            const postTitle = document.createElement('strong');
+            postTitle.textContent = `${post.firstname} - ${post.title}`;
+            
+            const postContent = document.createElement('p');
+            postContent.innerHTML = post.content;
+
+            postDiv.appendChild(postTitle);
+            postDiv.appendChild(postContent);
+
+            // Only show edit and delete buttons if the user is not a ForumMod or EventAdmin
+            if (user && post.account_id === user.account_id && user.role !== 'ForumMod' || user && user.role === 'EventAdmin') {
+                const editButton = document.createElement('button');
+                editButton.className = 'btn btn-warning btn-sm me-2';
+                editButton.textContent = 'Edit';
+                editButton.addEventListener('click', () => showEditModal(post));
+
+                const deleteButton = document.createElement('button');
+                deleteButton.className = 'btn btn-danger btn-sm';
+                deleteButton.textContent = 'Delete';
+                deleteButton.addEventListener('click', () => deletePost(post.post_id));
+
+                postDiv.appendChild(editButton);
+                postDiv.appendChild(deleteButton);
+            }
 
             postsContainer.appendChild(postDiv);
-        });
-
-        // Add event listeners for delete and edit buttons
-        document.querySelectorAll('.delete-post-button').forEach(button => {
-            button.addEventListener('click', () => {
-                const postId = button.getAttribute('data-post-id');
-                deletePost(postId);
-            });
-        });
-
-        document.querySelectorAll('.edit-post-button').forEach(button => {
-            button.addEventListener('click', () => {
-                const postId = button.getAttribute('data-post-id');
-                const post = posts.find(p => p.post_id == postId);
-                if (user.account_id === post.account_id) {
-                    showEditModal(post);
-                } else {
-                    alert("You can only edit your own posts.");
-                }
-            });
         });
     })
     .catch(error => console.error('Error fetching posts:', error));

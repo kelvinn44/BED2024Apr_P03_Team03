@@ -12,10 +12,10 @@ const eventSignUpController = require("./controllers/eventSignUpController");
 const donationController = require('./controllers/donationController'); // Anne Marie's function
 const forumController = require('./controllers/forumController'); // Natalie's function
 const validateUser = require("./middlewares/validateUserSignup");
+const validateForum = require('./middlewares/validateForum');
+
 const authenticateAccount = require('./middlewares/authenticateAccount');
 const validateEvent = require('./middlewares/validateEvent');
-
-const Forum = require("./models/forum");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -87,36 +87,13 @@ app.get("/posts", forumController.getAllPosts);
 app.get("/posts/:id", forumController.getPostById);
 
 //route to create a post - Natalie's function:
-app.post("/posts", forumController.createPost);
+app.post("/posts", validateForum, forumController.createPost);
 
 //route to update a post - Natalie's function:
-app.put("/posts/:id", forumController.updatePost);
+app.put("/posts/:id", validateForum, forumController.updatePost);
 
 //route to delete a post - Natalie's function:
 app.delete("/posts/:id", forumController.deletePost);
-
-//route for nats api
-app.get('/api/posts', async (req, res) => {
-  try {
-    const posts = await Forum.getAllPosts();
-    res.json(posts);
-  } catch (error) {
-    res.status(500).json({ message: 'Error fetching posts' });
-  }
-});
-
-app.post('/api/posts', async (req, res) => {
-  try {
-    const { title, content } = req.body;
-    const accountId = req.user.accountId; // Ensure req.user contains the logged in user information
-    const postId = await Forum.createPost({ title, content }, accountId);
-    res.json({ postId });
-  } catch (error) {
-    res.status(500).json({ message: 'Error creating post' });
-  }
-});
-
-
 
 app.listen(port, async () => {
   try {

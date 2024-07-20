@@ -34,7 +34,61 @@
                 <button class="btn btn-danger" id="logout">Log out?</button>
             </div>
 
-            <!-- TODO: add the required elements here -->
+            <div class="container mt-4">
+                <h2>All Forum Posts</h2>
+                <h4>Moderate our forum or create a post</h4>
+                <div class="form-container">
+                    <button id="create-post-button" class="btn btn-primary">Create a Post</button>
+                </div>
+                <br>
+                <div id="post-composer" style="display: none;">
+                    <h2>Create a Post</h2>
+                    <form id="create-post-form">
+                        <div class="mb-3">
+                            <label for="post-title" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="post-title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="post-content" class="form-label">Content</label>
+                            <textarea class="form-control" id="post-content" rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="button" class="btn btn-secondary" id="close-post-composer">Close</button>
+                        <br>
+                        <small class="form-text text-muted">To format posts, use HTML elements like <code>&lt;ol&gt;</code> and <code>&lt;li&gt;</code>.</small>
+                    </form>
+                    <br>
+                </div>
+                <div id="posts-container">
+                    <!-- Posts will be dynamically inserted here by forumModDashboard.js -->
+                </div>
+            </div>
+        </div>
+    
+        <!-- Edit Post Modal -->
+        <div class="modal fade" id="editPostModal" tabindex="-1" aria-labelledby="editPostModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editPostModalLabel">Edit Post</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="edit-post-form">
+                            <input type="hidden" id="edit-post-id">
+                            <div class="mb-3">
+                                <label for="edit-post-title" class="form-label">Title</label>
+                                <input type="text" class="form-control" id="edit-post-title" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-post-content" class="form-label">Content</label>
+                                <textarea class="form-control" id="edit-post-content" rows="4" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Update</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
         
         <footer class="footer-custom">

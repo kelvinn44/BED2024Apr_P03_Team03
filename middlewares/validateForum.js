@@ -1,10 +1,9 @@
 const Joi = require("joi");
 
-const validateUserForum = (req, res, next) => {
+const validateForum = (req, res, next) => {
   const schema = Joi.object({
-    title: Joi.string().min(1).max(50).required(),
-    content: Joi.string().min(1).max(250).required(),
-   
+    title: Joi.string().min(1).max(100).required(),
+    content: Joi.string().min(1).max(10000).required()
   });
 
   const validation = schema.validate(req.body, { abortEarly: false }); // Validate request body
@@ -18,4 +17,4 @@ const validateUserForum = (req, res, next) => {
   next(); // If validation passes, proceed to the next route handler
 };
 
-module.exports = validateUserForum;
+module.exports = validateForum;

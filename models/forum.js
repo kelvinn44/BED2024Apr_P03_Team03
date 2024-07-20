@@ -2,18 +2,23 @@ const sql = require("mssql");
 const dbConfig = require("../dbConfig");
 
 class Forum {
-  constructor(post_id, account_id, post_date, title, content) {
+  constructor(post_id, account_id, post_date, title, content, firstname) {
     this.post_id = post_id;
     this.account_id = account_id;
     this.post_date = post_date;
     this.title = title;
     this.content = content;
+    this.firstname = firstname;
   }
 
   static async getAllPosts() {
     const connection = await sql.connect(dbConfig);
 
-    const sqlQuery = `SELECT * FROM Forum`;
+    const sqlQuery = `SELECT Forum.post_id, Forum.account_id, Forum.post_date, Forum.title, Forum.content, Account.firstname 
+      FROM Forum 
+      INNER JOIN Account ON Forum.account_id = Account.account_id
+      ORDER BY Forum.post_date DESC
+      `;
 
     const request = connection.request();
     const result = await request.query(sqlQuery);
@@ -27,10 +32,12 @@ class Forum {
           row.account_id,
           row.post_date,
           row.title,
-          row.content
+          row.content,
+          row.firstname
         )
     );
   }
+
   static async getPostById(postId) {
     const connection = await sql.connect(dbConfig);
 
