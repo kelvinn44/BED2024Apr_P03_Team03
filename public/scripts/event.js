@@ -64,7 +64,57 @@ function handleSignUp(event) {
     const eventTitleField = document.getElementById('event-title');
     const closeButton = document.getElementById('close-button');
 
-    if (!user) {
+    if (user) {
+        // Check if the logged-in user is a staff member
+        if (user.role === 'EventAdmin' || user.role === 'ForumMod') {
+            alert("Staff members are not allowed to sign up for events.");
+            return;
+        }
+
+        // Check if the user has already signed up for this event
+        fetch(`/eventSignUp/${user.account_id}`)
+        .then(response => response.json())
+        .then(data => {
+            const alreadySignedUp = data.some(signUp => signUp.event_id === event.event_id);
+            if (alreadySignedUp) {
+                alert('You have already signed up for this event.');
+            } else {
+                // Directly sign up logged-in users without showing the form
+                const signUpData = {
+                    event_id: event.event_id,
+                    event_title: event.event_title,
+                    firstname: user.firstname,
+                    lastname: user.lastname,
+                    email: user.email,
+                    phone_number: user.phone_number,
+                    signup_date: new Date().toISOString(),
+                    account_id: user.account_id
+                };
+
+                // Send sign-up data to the server
+                fetch('/eventSignUp', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('jwt_token')}` // Ensure JWT token is sent
+                    },
+                    body: JSON.stringify(signUpData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(`You've signed up for ${event.event_title}`);
+                })
+                .catch(error => {
+                    console.error('Error signing up for the event:', error);
+                    alert('Failed to sign up for the event. Please try again.');
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error checking sign-up status:', error);
+            alert('Failed to check sign-up status. Please try again.');
+        });
+    } else {
         // Show the signup form for non-logged-in users
         eventTitleField.value = event.event_title;
         signupContainer.style.display = 'block';
@@ -111,36 +161,5 @@ function handleSignUp(event) {
             signupContainer.style.display = 'none';
             signupForm.reset();
         };
-
-    } else {
-        // Directly sign up logged-in users without showing the form
-        const signUpData = {
-            event_id: event.event_id,
-            event_title: event.event_title,
-            firstname: user.firstname,
-            lastname: user.lastname,
-            email: user.email,
-            phone_number: user.phone_number,
-            signup_date: new Date().toISOString(),
-            account_id: user.account_id
-        };
-
-        // Send sign-up data to the server
-        fetch('/eventSignUp', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}` // Ensure JWT token is sent
-            },
-            body: JSON.stringify(signUpData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            alert(`You've signed up for ${event.event_title}`);
-        })
-        .catch(error => {
-            console.error('Error signing up for the event:', error);
-            alert('Failed to sign up for the event. Please try again.');
-        });
     }
 }

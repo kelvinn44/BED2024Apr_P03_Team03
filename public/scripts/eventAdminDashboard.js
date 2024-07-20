@@ -45,7 +45,7 @@ document.getElementById('add-event-form').addEventListener('submit', function(ev
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            //'Authorization': `Bearer ${localStorage.getItem('token')}` // Add JWT token to the headers
+            //'Authorization': `Bearer ${localStorage.getItem('jwt_token')}` // Add JWT token to the headers
         },
         body: JSON.stringify(eventData)
     })
@@ -71,7 +71,6 @@ document.getElementById('add-event-form').addEventListener('submit', function(ev
         console.error('Error:', error);
     });
 });
-
 
 // Get all events and display them in the current events container
 function displayEvents() {
@@ -101,8 +100,11 @@ function displayEvents() {
                 document.getElementById('edit-event-id').value = event.event_id;
                 document.getElementById('edit-event-title').value = event.event_title;
                 document.getElementById('edit-event-description').value = event.description;
-                document.getElementById('edit-event-date').value = event.event_date;
-                document.getElementById('edit-event-location').value = event.event_location;
+
+                const eventDate = new Date(event.event_date);
+                document.getElementById('edit-event-date').value = eventDate.toISOString().split('T')[0]; // Set date in YYYY-MM-DD format
+                document.getElementById('edit-event-time').value = eventDate.toTimeString().split(':').slice(0, 2).join(':'); // Set time in HH:MM format
+                document.getElementById('edit-event-location').value = event.location;
 
                 // Show the modal
                 const editEventModal = new bootstrap.Modal(document.getElementById('editEventModal'));
@@ -193,8 +195,3 @@ document.getElementById('edit-event-form').addEventListener('submit', async func
         console.error('Error:', error);
     }
 });
-
-  
-  
-  
-  
