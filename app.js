@@ -77,6 +77,9 @@ app.get("/donations", donationController.getAllDonations);
 //route to get donations by account id - Anne Marie's function:
 app.get("/donations/:id", donationController.getDonationsByAccountId);
 
+//route to update a recurring donation - Anne Marie's function:
+app.put("/donations/:id", donationController.updateRecurringDonation);
+
 //route to get all posts - Natalie's function:
 app.get("/posts", forumController.getAllPosts);
 
