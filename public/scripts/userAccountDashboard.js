@@ -59,7 +59,7 @@ if (!user) {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                //'Authorization': `Bearer ${localStorage.getItem('jwt_token')}` // Add JWT token to the headers
+                'Authorization': `Bearer ${localStorage.getItem('jwt_token')}` // Add JWT token to the headers
             },
             body: JSON.stringify(updatedUser)
         })
@@ -77,7 +77,11 @@ if (!user) {
     });
 
     // Fetch user details including recurring donation amount
-    fetch(`/user/${user.account_id}`)
+    fetch(`/user/${user.account_id}`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('jwt_token')}` // Add JWT token to the headers
+            },
+        })
         .then((response) => response.json())
         .then((data) => {
             // Display recurring donation amount
@@ -90,7 +94,11 @@ if (!user) {
         .catch((error) => console.error("Error fetching user details:", error));
 
     // Fetch user donations
-    fetch(`/donations/${user.account_id}`)
+    fetch(`/donations/${user.account_id}`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('jwt_token')}` // Add JWT token to the headers
+            },
+        })
         .then((response) => response.json())
         .then((data) => {
             const donationsList = document.getElementById("donations-list");
@@ -124,7 +132,11 @@ if (!user) {
         .catch((error) => console.error("Error fetching donations:", error));
 
     // Fetch user events sign up
-    fetch(`/eventSignUp/${user.account_id}`)
+    fetch(`/eventSignUp/${user.account_id}`, {
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('jwt_token')}` // Add JWT token to the headers
+        },
+    })
     .then(response => response.json())
     .then(data => {
         const eventsList = document.getElementById("events-list");
