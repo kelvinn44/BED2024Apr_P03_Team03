@@ -40,9 +40,20 @@ async function getDonationsByAccountId(req, res) {
     }
 };
 
+async function updateRecurringDonation(req, res) {
+    const { donation_id, account_id, amount } = req.body;
+    try {
+        const donation = await Donation.updateRecurringDonation(donation_id, account_id, amount);
+        res.json(donation);
+    } catch (error) {
+        res.status(500).send('Server error');
+    }
+};
+
 module.exports = {
     getDonations,
     createDonation,
     getAllDonations,
-    getDonationsByAccountId
+    getDonationsByAccountId,
+    updateRecurringDonation
 };
