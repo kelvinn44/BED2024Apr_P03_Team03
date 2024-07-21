@@ -95,7 +95,7 @@ function fetchPosts() {
             postDiv.appendChild(postContent);
 
             // Only show edit and delete buttons if the user is not a ForumMod or EventAdmin
-            if (user && post.account_id === user.account_id && user.role !== 'ForumMod' || user && user.role === 'EventAdmin') {
+            if (user && post.account_id === user.account_id && user.role !== 'ForumMod' && user.role !== 'EventAdmin') {
                 const editButton = document.createElement('button');
                 editButton.className = 'btn btn-warning btn-sm me-2';
                 editButton.textContent = 'Edit';
