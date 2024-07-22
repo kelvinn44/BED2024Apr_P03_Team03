@@ -2,6 +2,7 @@ const Joi = require("joi");
 
 const validateForum = (req, res, next) => {
   const schema = Joi.object({
+    account_id: Joi.number().integer().positive().required(),
     title: Joi.string().min(1).max(100).required(),
     content: Joi.string().min(1).max(10000).required()
   });
