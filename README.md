@@ -1,4 +1,4 @@
-# BED2024Apr_P03_Team03 (April 2024 semester)
+# BED2024Apr_P03_Team03
 ## Member Allocation
 Tan Guo Zhi Kelvin (S10262567K): Account
 

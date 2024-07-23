@@ -5,8 +5,8 @@ const routes = ["./app.js"]; // Path to your API route files
 
 const doc = {
   info: {
-    title: "My API",
-    description: "Description of your API",
+    title: "BED2024Apr_P03_Team03 API",
+    description: "API documentation for BED2024Apr_P03_Team03 assignment",
   },
   host: "localhost:3000", // Replace with your actual host if needed
 };
