@@ -20,6 +20,8 @@ if (!user) {
     document.getElementById("logout").addEventListener("click", (event) => {
         event.preventDefault();
         localStorage.removeItem("user");
+        localStorage.removeItem("jwt_token");
+        localStorage.removeItem("_grecaptcha");
         alert("Successfully logged out!\nSee you again.");
         window.location.href = "index.html";
     });
@@ -55,7 +57,7 @@ if (!user) {
             password: document.getElementById("edit-password").value
         };
 
-        fetch(`/user/${user.account_id}`, {
+        fetch(`/editUser/${user.account_id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -76,7 +78,7 @@ if (!user) {
             });
     });
 
-    // Fetch user details including recurring donation amount
+    // Fetch user recurring donation amount
     fetch(`/user/${user.account_id}`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('jwt_token')}` // Add JWT token to the headers

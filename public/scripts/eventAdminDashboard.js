@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById("logout").addEventListener("click", (event) => {
         event.preventDefault();
         localStorage.removeItem("user");
+        localStorage.removeItem("jwt_token");
+        localStorage.removeItem("_grecaptcha");
         alert("Successfully logged out!\nSee you again.");
         window.location.href = "index.html";
     });
@@ -45,7 +47,7 @@ document.getElementById('add-event-form').addEventListener('submit', function(ev
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            //'Authorization': `Bearer ${localStorage.getItem('jwt_token')}` // Add JWT token to the headers
+            'Authorization': `Bearer ${localStorage.getItem('jwt_token')}` // Add JWT token to the headers
         },
         body: JSON.stringify(eventData)
     })
@@ -149,8 +151,12 @@ function displayEvents() {
 
 // Function to delete an event
 async function deleteEvent(eventId) {
-    const response = await fetch(`/events/${eventId}`, {
-        method: 'DELETE'
+    const response = await fetch(`/deleteEvent/${eventId}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`,
+            'Content-Type': 'application/json'
+        }
     });
     return response.ok;
 }
@@ -177,10 +183,11 @@ document.getElementById('edit-event-form').addEventListener('submit', async func
     };
 
     try {
-        const response = await fetch(`/events/${eventId}`, {
+        const response = await fetch(`/editEvent/${eventId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('jwt_token')}` // Add JWT token to the headers
             },
             body: JSON.stringify(updatedEventData)
         });

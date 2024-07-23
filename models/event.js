@@ -70,12 +70,6 @@ class Event {
         connection.close();
 
         return result.rowsAffected[0] > 0;
-
-        //issue???:
-        //const insertedId = result.recordset[0].event_id;
-        //const newEvent = new Event(insertedId, event.event_title, event.description, event.event_date, event.location, accountId);
-        //return newEvent;
-        
     } catch (error) {
         throw new Error('Error creating event');
     }

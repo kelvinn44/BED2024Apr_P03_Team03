@@ -39,10 +39,10 @@ app.post('/signup', validateUser, accountController.createUser);
 app.post('/login', accountController.loginUser);
 
 // route to get user details - Kelvin's function:
-app.get('/user/:id', accountController.getUser);
+app.get('/user/:id', authenticateAccount, accountController.getUser);
 
 // route to update user details - Kelvin's function:
-app.put('/user/:id', accountController.updateUser);
+app.put('/editUser/:id', authenticateAccount, accountController.updateUser);
 
 // route to get events - Aaron's function:
 app.get("/events", eventsController.getAllEvents);
@@ -51,52 +51,52 @@ app.get("/events", eventsController.getAllEvents);
 app.get("/events/:id", eventsController.getEventById);
 
 // route to create events - Aaron's function:
-app.post("/addEvents", validateEvent, eventsController.createEvent);
+app.post("/addEvents", validateEvent, authenticateAccount, eventsController.createEvent);
 
 // route to update events - Aaron's function:
-app.put("/events/:id", validateEvent, eventsController.updateEvent);
+app.put("/editEvent/:id", validateEvent, authenticateAccount, eventsController.updateEvent);
 
 // route to delete events - Aaron's function:
-app.delete("/events/:id", eventsController.deleteEvent);
+app.delete("/deleteEvent/:id", authenticateAccount, eventsController.deleteEvent);
 
 // route to get event sign ups by account id - Aaron's function:
-app.get("/eventSignUp/:id", eventSignUpController.getEventSignUpByAccId);
+app.get("/eventSignUp/:id", authenticateAccount, eventSignUpController.getEventSignUpByAccId);
 
 // route to create event sign ups - Aaron's function:
 app.post("/eventSignUp", eventSignUpController.createEventSignUp);
 
-// route to get latest donations - Anne Marie's function:
+//route to get all donations (for excel api) - Anne Marie's function:
+app.get("/donations", donationController.getAllDonations);
+
+// route to get 5 latest donations - Anne Marie's function:
 app.get("/latestDonations", donationController.getDonations);
 
 // route to create a donation - Anne Marie's function:
-app.post("/donations", validateDonation, donationController.createDonation);
-
-//route to get all donations - Anne Marie's function:
-app.get("/donations", donationController.getAllDonations);
+app.post("/donations", validateDonation, authenticateAccount, donationController.createDonation);
 
 //route to get donations by account id - Anne Marie's function:
-app.get("/donations/:id", donationController.getDonationsByAccountId);
+app.get("/donations/:id", authenticateAccount, donationController.getDonationsByAccountId);
 
 //route to get a recurring donation - Anne Marie's function:
-app.get("/donations/recurring/:id", donationController.getRecurringDonation);
+app.get("/donations/recurring/:id", authenticateAccount, donationController.getRecurringDonation);
 
 //route to post and update (existing) a recurring donation - Anne Marie's function:
-app.post('/donations/recurring', validateDonation, donationController.updateRecurringDonation);
+app.post('/donations/recurring', authenticateAccount, donationController.updateRecurringDonation);
 
 //route to get all posts - Natalie's function:
-app.get("/posts", forumController.getAllPosts);
+app.get("/allPosts", forumController.getAllPosts);
 
 //route to get post by id - Natalie's function:
 app.get("/posts/:id", forumController.getPostById);
 
 //route to create a post - Natalie's function:
-app.post("/posts", validateForum, forumController.createPost);
+app.post("/posts", validateForum, authenticateAccount, forumController.createPost);
 
 //route to update a post - Natalie's function:
-app.put("/posts/:id", validateForum, forumController.updatePost);
+app.put("/editPosts/:id", validateForum, authenticateAccount, forumController.updatePost);
 
 //route to delete a post - Natalie's function:
-app.delete("/posts/:id", forumController.deletePost);
+app.delete("/deletePosts/:id", authenticateAccount, forumController.deletePost);
 
 app.listen(port, async () => {
   try {

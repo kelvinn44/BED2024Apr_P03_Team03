@@ -52,10 +52,14 @@
                 <label>Enter amount:</label>
                 <input type="text" id="amt-monthly" placeholder="Enter amount here">
                 <button type="button" id="confirm-monthly">Confirm</button>
+                <p><b><small>To cancel a monthly reccurring donation, enter the number 0.</small></b></p>
             </form>
             <br>
             <p class="donationtype">5 Latest donations</p>
             <ol id="donation-list"></ol>
+            <br>
+            <!-- use excel instead of google sheets api -->
+            <button id="export-donations" class="btn btn-primary">Export Donations</button>
         </div>
     </div>
 

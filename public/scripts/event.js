@@ -1,14 +1,17 @@
+// When the DOM content is fully loaded, call the fetchEvents function
 document.addEventListener('DOMContentLoaded', function() {
     fetchEvents();
 });
 
+// Function to fetch events from the server and display them on the page
 function fetchEvents() {
     fetch('/events')
-        .then(response => response.json())
+        .then(response => response.json()) // Parse the response as JSON
         .then(events => {
             const eventsContainer = document.querySelector('.container.mt-4');
-            eventsContainer.innerHTML = '';
+            eventsContainer.innerHTML = ''; // Clear previous events
 
+            // Iterate through each event and create the necessary HTML elements
             events.forEach(event => {
                 const eventBox = document.createElement('div');
                 eventBox.className = 'event-box';
@@ -47,8 +50,9 @@ function fetchEvents() {
                 const signUpButton = document.createElement('button');
                 signUpButton.className = 'sign-up-button';
                 signUpButton.textContent = 'Click to Sign Up';
-                signUpButton.addEventListener('click', () => handleSignUp(event));
+                signUpButton.addEventListener('click', () => handleSignUp(event)); // Add event listener for signup
 
+                // Append all the created elements to the eventBox
                 eventBox.appendChild(eventTitle);
                 eventBox.appendChild(eventDateDiv);
                 eventBox.appendChild(eventTimeDiv);
@@ -56,12 +60,14 @@ function fetchEvents() {
                 eventBox.appendChild(eventDescription);
                 eventBox.appendChild(signUpButton);
 
+                // Append the eventBox to the events container
                 eventsContainer.appendChild(eventBox);
             });
         })
-        .catch(error => console.error('Error fetching events:', error));
+        .catch(error => console.error('Error fetching events:', error)); // Handle any errors during fetch
 }
 
+// Function to handle event sign up process
 function handleSignUp(event) {
     const user = JSON.parse(localStorage.getItem("user"));
     const signupContainer = document.querySelector('.signup-container');
@@ -70,18 +76,25 @@ function handleSignUp(event) {
     const closeButton = document.getElementById('close-button');
 
     if (user) {
+        // Check if the logged in user is a staff member
         if (user.role === 'EventAdmin' || user.role === 'ForumMod') {
             alert("Staff members are not allowed to sign up for events.");
             return;
         }
 
-        fetch(`/eventSignUp/${user.account_id}`)
+        // Check if the logged in user has already signed up for this event
+        fetch(`/eventSignUp/${user.account_id}`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`
+            },
+        })
         .then(response => response.json())
         .then(data => {
             const alreadySignedUp = data.some(signUp => signUp.event_id === event.event_id);
             if (alreadySignedUp) {
                 alert('You have already signed up for this event.');
             } else {
+                // Directly sign up logged in users without showing the form
                 const signUpData = {
                     event_id: event.event_id,
                     event_title: event.event_title,
@@ -93,11 +106,11 @@ function handleSignUp(event) {
                     account_id: user.account_id
                 };
 
+                // Send sign up data to the server
                 fetch('/eventSignUp', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(signUpData)
                 })
@@ -116,11 +129,12 @@ function handleSignUp(event) {
             alert('Failed to check sign-up status. Please try again.');
         });
     } else {
+        // Show the sign up form for non logged in users
         eventTitleField.value = event.event_title;
         signupContainer.style.display = 'block';
 
         signupForm.onsubmit = function(e) {
-            e.preventDefault();
+            e.preventDefault(); // Prevent default form submission
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const phone = document.getElementById('phone').value;
@@ -135,6 +149,7 @@ function handleSignUp(event) {
                 signup_date: new Date().toISOString()
             };
 
+            // Send sign up data to the server
             fetch('/eventSignUp', {
                 method: 'POST',
                 headers: {
@@ -145,8 +160,8 @@ function handleSignUp(event) {
             .then(response => response.json())
             .then(data => {
                 alert('You have successfully signed up for the event!');
-                signupContainer.style.display = 'none';
-                signupForm.reset();
+                signupContainer.style.display = 'none'; // Hide the sign up form
+                signupForm.reset(); // Reset the form fields
             })
             .catch(error => {
                 console.error('Error signing up for the event:', error);
@@ -154,6 +169,7 @@ function handleSignUp(event) {
             });
         };
 
+        // Handle close button click to hide the signup form
         closeButton.onclick = function() {
             signupContainer.style.display = 'none';
             signupForm.reset();

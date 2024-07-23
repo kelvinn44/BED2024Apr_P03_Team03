@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function fetchPosts() {
     const user = JSON.parse(localStorage.getItem('user'));
 
-    fetch('/posts')
+    fetch('/allPosts')
     .then(response => response.json())
     .then(posts => {
         const postsContainer = document.getElementById('posts-container');
@@ -91,8 +91,14 @@ function fetchPosts() {
             const postContent = document.createElement('p');
             postContent.innerHTML = post.content;
 
+            const postDate = document.createElement('div');
+            postDate.className = 'post-date';
+            const date = new Date(post.post_date);
+            postDate.textContent = `Posted on: ${date.toLocaleDateString('en-GB')} at ${date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: true })}`;
+
             postDiv.appendChild(postTitle);
             postDiv.appendChild(postContent);
+            postDiv.appendChild(postDate);
 
             // Only show edit and delete buttons if the user is not a ForumMod or EventAdmin
             if (user && post.account_id === user.account_id && user.role !== 'ForumMod' && user.role !== 'EventAdmin') {
@@ -130,7 +136,7 @@ document.getElementById('edit-post-form').addEventListener('submit', function(ev
     const updatedTitle = document.getElementById('edit-post-title').value;
     const updatedContent = document.getElementById('edit-post-content').value;
 
-    fetch(`/posts/${postId}`, {
+    fetch(`/editPosts/${postId}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -157,7 +163,7 @@ document.getElementById('edit-post-form').addEventListener('submit', function(ev
 
 function deletePost(postId) {
     if (confirm('Are you sure you want to delete this post?')) {
-        fetch(`/posts/${postId}`, {
+        fetch(`/deletePosts/${postId}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`

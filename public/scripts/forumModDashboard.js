@@ -19,6 +19,8 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById("logout").addEventListener("click", (event) => {
         event.preventDefault();
         localStorage.removeItem("user");
+        localStorage.removeItem("jwt_token");
+        localStorage.removeItem("_grecaptcha");
         alert("Successfully logged out!\nSee you again.");
         window.location.href = "index.html";
     });
@@ -79,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function fetchPosts() {
     const user = JSON.parse(localStorage.getItem('user'));
 
-    fetch('/posts')
+    fetch('/allPosts')
     .then(response => response.json())
     .then(posts => {
         const postsContainer = document.getElementById('posts-container');
@@ -141,7 +143,7 @@ document.getElementById('edit-post-form').addEventListener('submit', function(ev
     const updatedTitle = document.getElementById('edit-post-title').value;
     const updatedContent = document.getElementById('edit-post-content').value;
 
-    fetch(`/posts/${postId}`, {
+    fetch(`/editPosts/${postId}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -168,7 +170,7 @@ document.getElementById('edit-post-form').addEventListener('submit', function(ev
 
 function deletePost(postId) {
     if (confirm('Are you sure you want to delete this post?')) {
-        fetch(`/posts/${postId}`, {
+        fetch(`/deletePosts/${postId}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`
