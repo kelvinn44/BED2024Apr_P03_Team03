@@ -10,106 +10,134 @@ class Book {
   }
 
   static async getAllBooks() {
-    const connection = await sql.connect(dbConfig);
-
-    const sqlQuery = `SELECT * FROM Books`; // Replace with your actual table name
-
-    const request = connection.request();
-    const result = await request.query(sqlQuery);
-
-    connection.close();
-
-    return result.recordset.map(
-      (row) => new Book(row.book_id, row.title, row.author, row.availability)
-    ); // Convert rows to Book objects
+    let connection;
+    try {
+      connection = await sql.connect(dbConfig);
+      const sqlQuery = `SELECT * FROM Books`;
+      const request = connection.request();
+      const result = await request.query(sqlQuery);
+      return result.recordset.map(
+        (row) => new Book(row.book_id, row.title, row.author, row.availability)
+      );
+    } catch (error) {
+      throw new Error('Database Error');
+    } finally {
+      if (connection) {
+        await connection.close();
+      }
+    }
   }
 
   static async getBookById(id) {
-    const connection = await sql.connect(dbConfig);
-
-    const sqlQuery = `SELECT * FROM Books WHERE book_id = @id`; // Parameterized query
-
-    const request = connection.request();
-    request.input("id", id);
-    const result = await request.query(sqlQuery);
-
-    connection.close();
-
-    return result.recordset[0]
-      ? new Book(
-          result.recordset[0].book_id,
-          result.recordset[0].title,
-          result.recordset[0].author,
-          result.recordset[0].availability
-        )
-      : null; // Handle book not found
+    let connection;
+    try {
+      connection = await sql.connect(dbConfig);
+      const sqlQuery = `SELECT * FROM Books WHERE book_id = @id`;
+      const request = connection.request();
+      request.input("id", id);
+      const result = await request.query(sqlQuery);
+      return result.recordset[0]
+        ? new Book(
+            result.recordset[0].book_id,
+            result.recordset[0].title,
+            result.recordset[0].author,
+            result.recordset[0].availability
+          )
+        : null;
+    } catch (error) {
+      throw new Error('Database Error');
+    } finally {
+      if (connection) {
+        await connection.close();
+      }
+    }
   }
 
   static async createBook(newBookData) {
-    const connection = await sql.connect(dbConfig);
-
-    const sqlQuery = `INSERT INTO Books (title, author, availability) VALUES (@title, @author, @availability); SELECT SCOPE_IDENTITY() AS id;`; // Retrieve ID of inserted record
-
-    const request = connection.request();
-    request.input("title", newBookData.title);
-    request.input("author", newBookData.author);
-    request.input("availability", newBookData.availability);
-
-    const result = await request.query(sqlQuery);
-
-    connection.close();
-
-    // Retrieve the newly created book using its ID
-    return this.getBookById(result.recordset[0].id);
+    let connection;
+    try {
+      connection = await sql.connect(dbConfig);
+      const sqlQuery = `INSERT INTO Books (title, author, availability) VALUES (@title, @author, @availability); SELECT SCOPE_IDENTITY() AS id;`;
+      const request = connection.request();
+      request.input("title", newBookData.title);
+      request.input("author", newBookData.author);
+      request.input("availability", newBookData.availability);
+      const result = await request.query(sqlQuery);
+      return this.getBookById(result.recordset[0].id);
+    } catch (error) {
+      throw new Error('Database Error');
+    } finally {
+      if (connection) {
+        await connection.close();
+      }
+    }
   }
 
   static async updateBook(id, newBookData) {
-    const connection = await sql.connect(dbConfig);
-
-    const sqlQuery = `UPDATE Books SET title = @title, author = @author, availability = @availability WHERE book_id = @id`; // Parameterized query
-
-    const request = connection.request();
-    request.input("id", id);
-    request.input("title", newBookData.title || null); // Handle optional fields
-    request.input("author", newBookData.author || null);
-    request.input("availability", newBookData.availability || null);
-
-    await request.query(sqlQuery);
-
-    connection.close();
-
-    return this.getBookById(id); // returning the updated book data
+    let connection;
+    try {
+      connection = await sql.connect(dbConfig);
+      const sqlQuery = `UPDATE Books SET title = @title, author = @author, availability = @availability WHERE book_id = @id`;
+      const request = connection.request();
+      request.input("id", id);
+      request.input("title", newBookData.title || null);
+      request.input("author", newBookData.author || null);
+      request.input("availability", newBookData.availability || null);
+      await request.query(sqlQuery);
+      return this.getBookById(id);
+    } catch (error) {
+      throw new Error('Database Error');
+    } finally {
+      if (connection) {
+        await connection.close();
+      }
+    }
   }
 
   static async deleteBook(id) {
-    const connection = await sql.connect(dbConfig);
-
-    const sqlQuery = `DELETE FROM Books WHERE book_id = @id`; // Parameterized query
-
-    const request = connection.request();
-    request.input("id", id);
-    const result = await request.query(sqlQuery);
-
-    connection.close();
-
-    return result.rowsAffected > 0; // Indicate success based on affected rows
+    let connection;
+    try {
+      connection = await sql.connect(dbConfig);
+      const sqlQuery = `DELETE FROM Books WHERE book_id = @id`;
+      const request = connection.request();
+      request.input("id", id);
+      const result = await request.query(sqlQuery);
+      return result.rowsAffected > 0;
+    } catch (error) {
+      throw new Error('Database Error');
+    } finally {
+      if (connection) {
+        await connection.close();
+      }
+    }
   }
 
-  static async updateAvailability(id, availability) {
-    const connection = await sql.connect(dbConfig);
+  static async updateAvailability(bookId, newAvailability) {
+    const pool = await sql.connect(/* your connection config */);
+    const request = pool.request();
+    
+    try {
+      request.input("id", bookId);
+      request.input("availability", newAvailability);
+      const result = await request.query(
+        "UPDATE Books SET availability = @availability WHERE book_id = @id"
+      );
 
-    const sqlQuery = `UPDATE Books SET availability = @availability WHERE book_id = @id`; // Parameterized query
+      // Check if result and rowsAffected are defined
+      if (result && result.rowsAffected && result.rowsAffected[0] === 0) {
+        return null; // No book found
+      }
 
-    const request = connection.request();
-    request.input("id", id);
-    request.input("availability", availability);
-
-    await request.query(sqlQuery);
-
-    connection.close();
-
-    return this.getBookById(id); // returning the updated book data
+      // Return the updated book object
+      return new Book({ book_id: bookId, availability: newAvailability });
+    } catch (error) {
+      throw error; // Handle error appropriately
+    } finally {
+      await pool.close(); // Ensure the connection is closed here
+    }
   }
 }
+
+
 
 module.exports = Book;

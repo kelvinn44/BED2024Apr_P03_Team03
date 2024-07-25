@@ -113,28 +113,29 @@ describe('Donation', () => {
     describe('getAllDonations', () => {
         it('should return all donations', async () => {
             const mockDonations = [
-                { donation_id: 1, account_id: 1, amount: 50, donation_date: '2021-01-01' },
-                { donation_id: 2, account_id: 2, amount: 100, donation_date: '2021-01-02' }
+                { donation_id: 1, account_id: 1, amount: 100, donation_date: '2023-07-22', firstname: 'John' },
+                { donation_id: 2, account_id: 2, amount: 200, donation_date: '2023-07-21', firstname: 'Jane' }
             ];
-
             requestMock.query.mockResolvedValue({ recordset: mockDonations });
 
             const result = await Donation.getAllDonations();
 
             expect(sql.connect).toHaveBeenCalled();
-            expect(requestMock.query).toHaveBeenCalledWith(expect.stringContaining('SELECT donation_id, account_id, amount, donation_date FROM Donation'));
+            expect(requestMock.query).toHaveBeenCalledWith(expect.stringContaining('SELECT d.donation_id, d.account_id, d.amount, d.donation_date, a.firstname FROM Donation d JOIN Account a ON d.account_id = a.account_id'));
             expect(connectionMock.close).toHaveBeenCalled();
             expect(result).toEqual(mockDonations);
         });
 
         it('should handle errors', async () => {
-            requestMock.query.mockRejectedValue(new Error('Error fetching all donations'));
+            const error = new Error('Error fetching all donations');
+            requestMock.query.mockRejectedValue(error);
 
             await expect(Donation.getAllDonations()).rejects.toThrow('Error fetching all donations');
 
             expect(sql.connect).toHaveBeenCalled();
             expect(connectionMock.close).toHaveBeenCalled();
         });
+    
     });
 
     describe('getRecurringDonationByAccountId', () => {
