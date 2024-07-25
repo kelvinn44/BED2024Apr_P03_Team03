@@ -28,7 +28,7 @@ function fetchEvents() {
 
                 const eventTimeSGT = new Intl.DateTimeFormat('en-GB', { 
                     hour: '2-digit', minute: '2-digit', 
-                    timeZone: 'Asia/Singapore', hour12: false 
+                    timeZone: 'Asia/Singapore', hour12: true
                 }).format(eventDate);
 
                 const eventDateDiv = document.createElement('div');
