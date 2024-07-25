@@ -72,7 +72,7 @@ class Donation {
         let connection;
         try {
             connection = await sql.connect(dbConfig);
-            const sqlQuery = `SELECT donation_id, account_id, amount, donation_date FROM Donation`;
+            const sqlQuery = `SELECT d.donation_id, d.account_id, d.amount, d.donation_date, a.firstname FROM Donation d JOIN Account a ON d.account_id = a.account_id`;
             const request = connection.request();
             const result = await request.query(sqlQuery);
             return result.recordset;

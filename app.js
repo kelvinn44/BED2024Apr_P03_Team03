@@ -65,8 +65,8 @@ app.get("/eventSignUp/:id", authenticateAccount, eventSignUpController.getEventS
 // route to create event sign ups - Aaron's function:
 app.post("/eventSignUp", eventSignUpController.createEventSignUp);
 
-//route to get all donations (for excel api) - Anne Marie's function:
-app.get("/donations", donationController.getAllDonations);
+//route to get all donations - Anne Marie's function:
+app.get("/allDonations", authenticateAccount, donationController.getAllDonations);
 
 // route to get 5 latest donations - Anne Marie's function:
 app.get("/latestDonations", donationController.getDonations);
