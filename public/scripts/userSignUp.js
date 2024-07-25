@@ -5,13 +5,19 @@ document.getElementById('signupForm').addEventListener('submit', function(event)
     let email = document.getElementById('user-email').value;
     let phone_number = document.getElementById('user-phone').value;
     let password = document.getElementById('user-password').value;
+    let recaptchaToken = grecaptcha.getResponse(); // Get the reCAPTCHA token
+
+    if (!recaptchaToken) {
+        alert("Please complete the reCAPTCHA.");
+        return;
+    }
 
     fetch('/signup', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ firstname, lastname, email, phone_number, password })
+        body: JSON.stringify({ firstname, lastname, email, phone_number, password, recaptchaToken })
     })
     .then(response => {
         if (!response.ok) {
@@ -24,7 +30,7 @@ document.getElementById('signupForm').addEventListener('submit', function(event)
         if (data && data.user && data.token) {
             // Store new user data and JWT token in local storage
             localStorage.setItem('user', JSON.stringify(data.user));
-            localStorage.setItem('token', data.token);
+            localStorage.setItem('jwt_token', data.token);
 
             // Alert new user of successful sign up
             alert("Sign up successfully!\nWelcome to Willing Hearts " + firstname + "!");
@@ -38,14 +44,19 @@ document.getElementById('signupForm').addEventListener('submit', function(event)
             console.error("User data not found in server response.");
             alert("Sign up failed: User data or token not found in server response.");
         }
+        // Reset the reCAPTCHA widget
+        grecaptcha.reset();
     })
     .catch(error => {
-        //add useful error message later
+        //error handling
         let errorMessage = error.message || "An error occurred while signing up. Please try again later.";
         alert("Sign up failed: " + errorMessage + "\nPlease try again.");
         console.error('Error:', error);
 
         // restarts password field if error occur
         document.getElementById('user-password').value = "";
+
+        // Reset the reCAPTCHA widget
+        grecaptcha.reset();
     });
 });

@@ -7,6 +7,7 @@ const validateUser = (req, res, next) => {
     email: Joi.string().email().required(),
     phone_number: Joi.string().pattern(/^[0-9]{8}$/).required(), // Singapore phone number format - 8 digits
     password: Joi.string().min(6).max(20).required(),
+    recaptchaToken: Joi.string().required(), // Allow recaptchaToken field
   });
 
   const validation = schema.validate(req.body, { abortEarly: false }); // Validate request body

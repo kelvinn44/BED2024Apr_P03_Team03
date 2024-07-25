@@ -37,6 +37,14 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Centering reCAPTCHA */
+.recaptcha-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    padding-bottom: 10px;
+}
+
 /* footer css */
 .footer-custom {
     background-color: #1F262D;

@@ -1,3 +1,4 @@
+const axios = require('axios');
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const Account = require('../models/account');
@@ -19,9 +20,23 @@ async function getUser(req, res) {
 
 // Function to handle user login
 async function loginUser(req, res) {
-  const { email, password } = req.body;
+  const { email, password, 'g-recaptcha-response': recaptchaResponse } = req.body;
+
+  if (!recaptchaResponse) {
+    return res.status(400).json({ message: "reCAPTCHA token is missing" });
+  }
 
   try {
+    // Verify reCAPTCHA response
+    const secretKey = process.env.RECAPTCHA_SECRET_KEY; // Secret key from Google reCAPTCHA (stored in .env file)
+    const verificationURL = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${recaptchaResponse}`;
+
+    const recaptchaResult = await axios.post(verificationURL);
+
+    if (!recaptchaResult.data.success) {
+      return res.status(400).json({ message: "Failed reCAPTCHA verification" });
+    }
+
     // Validate user credentials
     const user = await Account.getUserByEmail(email);
     if (!user) {
@@ -44,15 +59,25 @@ async function loginUser(req, res) {
     res.status(200).json({ message: 'Login successful', user, token });
   } catch (err) {
     console.error(err);
-    res.status(500).send.json({ message: 'Internal server error' });
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
 // Function to handle user sign up
 async function createUser(req, res) {
-  const { firstname, lastname, email, phone_number, password } = req.body;
+  const { firstname, lastname, email, phone_number, password, recaptchaToken } = req.body;
 
+  // Verify reCAPTCHA response
+  const secretKey = process.env.RECAPTCHA_SECRET_KEY; // Secret key from Google reCAPTCHA (stored in .env file)
+  const verificationURL = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${recaptchaToken}`;
+  
   try {
+    const recaptchaResult = await axios.post(verificationURL);
+
+    if (!recaptchaResult.data.success) {
+      return res.status(400).json({ message: "Failed reCAPTCHA verification" });
+    }
+
     // Validate user data
     if (!firstname || !lastname || !email || !phone_number || !password) {
       return res.status(400).json({ message: "Please provide first name, last name, email, phone number, and password" });
@@ -97,7 +122,15 @@ async function updateUser(req, res) {
   const { firstname, lastname, email, phone_number, password } = req.body;
 
   try {
-      const updatedUser = await Account.updateUser(id, firstname, lastname, email, phone_number, password);
+    let hashedPassword = null;
+    if (password) {
+      // Hash the new password
+      const salt = await bcrypt.genSalt(10);
+      hashedPassword = await bcrypt.hash(password, salt);
+    }
+
+      // Update user details with the new hashed password
+      const updatedUser = await Account.updateUser(id, firstname, lastname, email, phone_number, hashedPassword);
       res.json({ user: updatedUser });
   } catch (error) {
       res.status(500).send('Server error');

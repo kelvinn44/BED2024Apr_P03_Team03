@@ -39,13 +39,24 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     event.preventDefault();
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
+    const recaptchaResponse = grecaptcha.getResponse(); // Get the reCAPTCHA response
+
+    if (!recaptchaResponse) {
+        alert('Please complete the reCAPTCHA.');
+        return;
+    }
 
     if (loginType === 'staff' && !staffRole) {
         alert('Please select a staff role.');
         return;
     }
 
-    const loginData = { email, password, role: loginType === 'staff' ? staffRole : 'User' };
+    const loginData = { 
+        email, 
+        password, 
+        role: loginType === 'staff' ? staffRole : 'User', 
+        'g-recaptcha-response': recaptchaResponse // Include the reCAPTCHA response 
+    };
 
     fetch('/login', {
         method: 'POST',
@@ -59,10 +70,12 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         if (data.message === 'Login successful') {
             if ((loginType === 'user' && data.user.role !== 'User') || 
                 (loginType === 'staff' && data.user.role !== staffRole)) {
-                alert(`Role mismatch! Please log in as ${data.user.role}.`); //remove/say invalid credentials
+                alert(`Role mismatch! Please log in as ${data.user.role}.`);
             } else {
                 alert(`Login successful!\nWelcome back ${data.user.firstname}`);
                 localStorage.setItem('user', JSON.stringify(data.user));
+                localStorage.setItem('jwt_token', data.token);
+                
                 if (loginType === 'staff') {
                     window.location.href = staffRole === 'ForumMod' ? 'forumModDashboard.html' : 'eventAdminDashboard.html';
                 } else {
@@ -72,9 +85,14 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         } else {
             alert(data.message || 'Invalid credentials. Please try again.');
         }
+        // Reset the reCAPTCHA widget
+        grecaptcha.reset();
     })
     .catch(error => {
         console.error('Error:', error);
         alert('An error occurred. Please try again later.');
+
+        // Reset the reCAPTCHA widget
+        grecaptcha.reset();
     });
 });
