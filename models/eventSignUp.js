@@ -41,7 +41,7 @@ class EventSignUp {
         return signups;
     }
       
-    // Method to create an event
+    // Method to sign up for an event
     static async createEventSignUp(eventSignUpData, accountId) {
       try {
           const connection = await sql.connect(dbConfig);

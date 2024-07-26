@@ -1,3 +1,4 @@
+// Check if the user is logged in as an Event Admin
 document.addEventListener('DOMContentLoaded', function() {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user && user.role === 'EventAdmin') {
@@ -149,18 +150,6 @@ function displayEvents() {
     .catch(error => console.error(error));
 }
 
-// Function to delete an event
-async function deleteEvent(eventId) {
-    const response = await fetch(`/deleteEvent/${eventId}`, {
-        method: 'DELETE',
-        headers: {
-            'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`,
-            'Content-Type': 'application/json'
-        }
-    });
-    return response.ok;
-}
-
 // Add event listener for the edit event form submission
 document.getElementById('edit-event-form').addEventListener('submit', async function(event) {
     event.preventDefault();
@@ -182,6 +171,7 @@ document.getElementById('edit-event-form').addEventListener('submit', async func
         location: location
     };
 
+    // Function to update an event
     try {
         const response = await fetch(`/editEvent/${eventId}`, {
             method: 'PUT',
@@ -206,3 +196,15 @@ document.getElementById('edit-event-form').addEventListener('submit', async func
         console.error('Error:', error);
     }
 });
+
+// Function to delete an event
+async function deleteEvent(eventId) {
+    const response = await fetch(`/deleteEvent/${eventId}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`,
+            'Content-Type': 'application/json'
+        }
+    });
+    return response.ok;
+}

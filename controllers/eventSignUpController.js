@@ -12,7 +12,7 @@ const getEventSignUpByAccId = async (req, res) => {
   }
 };
 
-// Function to create event sign ups
+// Function to sign up for an event
 const createEventSignUp = async (req, res) => {
   const newEventSignUp = req.body;
   const accountId = req.body.account_id;
