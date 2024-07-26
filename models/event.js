@@ -27,7 +27,7 @@ class Event {
     );
   }
 
-  // Method to get events by event id
+  // Method to get event by event id
   static async getEventById(eventId) {
     const connection = await sql.connect(dbConfig);
 
@@ -51,7 +51,7 @@ class Event {
       : null;
   }
 
-  // Method to create an event
+  // Method to create a new event
   static async createEvent(event) {
     try {
         const connection = await sql.connect(dbConfig);
@@ -102,7 +102,7 @@ class Event {
     return this.getEventById(eventId);
   }
   
-  // Method to update an event
+  // Method to delete an event
   static async deleteEvent(eventId) {
     try {
       const connection = await sql.connect(dbConfig);

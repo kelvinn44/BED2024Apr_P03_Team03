@@ -11,7 +11,7 @@ const getAllEvents = async (req, res) => {
     }
   };
 
-// Function to get event by id
+// Function to get event by event id
 const getEventById = async (req, res) => {
   const eventId = parseInt(req.params.id);
   try {
@@ -26,7 +26,7 @@ const getEventById = async (req, res) => {
   }
 };
 
-// Function to create event
+// Function to create a new event
 const createEvent = async (req, res) => {
   const newEvent = req.body;
   const accountId = req.body.id;
