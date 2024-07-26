@@ -9,6 +9,7 @@ class Donation {
         this.firstname = firstname;
     }
 
+    // Get 5 latest donations in descending order
     static async getDonations() {
         let connection;
         try {
@@ -25,7 +26,8 @@ class Donation {
             }
         }
     }
-
+    
+    // Create donations (one time and recurring)
     static async createDonation(account_id, amount) {
         let connection;
         try {
@@ -50,6 +52,7 @@ class Donation {
         }
     }
 
+    //Get donations by account id
     static async getDonationsByAccountId(account_id) {
         let connection;
         try {
@@ -68,6 +71,7 @@ class Donation {
         }
     }
 
+    // Get all donations
     static async getAllDonations() {
         let connection;
         try {
@@ -85,6 +89,7 @@ class Donation {
         }
     }
 
+    // Get recurring donation by account id
     static async getRecurringDonationByAccountId(account_id) {
         let connection;
         try {
@@ -103,6 +108,7 @@ class Donation {
         }
     }
 
+    // Update recurring donation
     static async updateRecurringDonation(account_id, amount) {
         let connection;
         try {
