@@ -25,6 +25,7 @@ function verifyJWT(req, res, next) {
       "/eventSignUp/:id": ["User", "EventAdmin"], // Event signups by account ID can be accessed by User and EventAdmin
 
       //Donation
+      "/allDonations": ["EventAdmin", "ForumMod"], // All donations can only be accessed by EventAdmin, and ForumMod
       "/donations/:id": ["User", "EventAdmin", "ForumMod"], // Specific donation details can be accessed by User, EventAdmin, and ForumMod
       "/donations/recurring/:id": ["User", "EventAdmin", "ForumMod"], // Specific recurring donation details can be accessed by User, EventAdmin, and ForumMod
       "/donations/recurring": ["User"], // Recurring donations can be done by User only

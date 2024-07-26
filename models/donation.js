@@ -30,7 +30,7 @@ class Donation {
         let connection;
         try {
             connection = await sql.connect(dbConfig);
-            const sqlQuery = `INSERT INTO Donation (account_id, amount, donation_date) VALUES (@account_id, @amount, GETDATE()); SELECT SCOPE_IDENTITY() AS donation_id;`;
+            const sqlQuery = `INSERT INTO Donation (account_id, amount, donation_date) VALUES (@account_id, @amount, GETDATE() AT TIME ZONE 'Singapore Standard Time' AT TIME ZONE 'UTC'); SELECT SCOPE_IDENTITY() AS donation_id;`;
             const request = connection.request();
             request.input('account_id', sql.Int, account_id);
             request.input('amount', sql.Decimal(10, 2), amount);
@@ -72,7 +72,7 @@ class Donation {
         let connection;
         try {
             connection = await sql.connect(dbConfig);
-            const sqlQuery = `SELECT donation_id, account_id, amount, donation_date FROM Donation`;
+            const sqlQuery = `SELECT d.donation_id, d.account_id, d.amount, d.donation_date, a.firstname FROM Donation d JOIN Account a ON d.account_id = a.account_id`;
             const request = connection.request();
             const result = await request.query(sqlQuery);
             return result.recordset;

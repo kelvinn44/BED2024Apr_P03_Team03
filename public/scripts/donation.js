@@ -190,7 +190,40 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    // Fetch and display all donations for staff members
+    async function fetchAllDonations() {
+        try {
+            const response = await fetch('/allDonations', {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`
+                }
+            });
+            const donations = await response.json();
+
+            const allDonationList = document.getElementById('all-donation-list');
+            allDonationList.innerHTML = ''; 
+
+            donations.forEach(donation => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${donation.firstname} donated $${donation.amount}`;
+                allDonationList.appendChild(listItem);
+            });
+        } catch (error) {
+            console.error('Error loading all donations:', error);
+        }
+    }
+
+    // Check if the user is ForumMod or EventAdmin and fetch all donations
+    async function checkAndFetchAllDonations() {
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (user && (user.role === 'EventAdmin' || user.role === 'ForumMod')) {
+            document.getElementById('all-donations-section').style.display = 'block';
+            await fetchAllDonations();
+        }
+    }
+
     // Initial fetch of donations and recurring donation
     fetchDonations();
     fetchRecurringDonation();
+    checkAndFetchAllDonations();
 });
