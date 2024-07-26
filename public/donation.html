@@ -43,8 +43,11 @@
             </div>
             <p id="amttd">Enter other amount:</p>
             <input type="text" id="amt" placeholder="Enter amount here">
+            <!-- Gignite implementation -->
             <div class="confirm-otd-container">
-                <button id="confirm-otd">Confirm donation</button>
+                <button id="confirm-otd" style="background-color: #339af0; width: 100%; padding: 1rem 1.5rem; font-size: 1.125rem; font-weight: 500; border-radius: 0.375rem; color: white;">
+                Confirm Donation
+            </button>
             </div>
             <br>
             <p class="donationtype">Monthly reccurring donation</p>
@@ -58,9 +61,6 @@
             <p class="donationtype">5 Latest donations</p>
             <ol id="donation-list"></ol>
             <br>
-            <!-- use excel instead of google sheets api function - to be deleted if can't do -->
-            <!-- <button id="export-donations" class="btn btn-primary">Export Donations</button> -->
-             
             <div id="all-donations-section" style="display: none;">
                 <p class="donationtype">All donations</p>
                 <ol id="all-donation-list"></ol>
