@@ -1,6 +1,7 @@
 // book.test.js
 const Book = require("../models/book");
 const sql = require("mssql");
+const dbConfig = require("../dbConfig");
 
 jest.mock("mssql"); // Mock the mssql library
 
@@ -37,7 +38,7 @@ describe("Book.getAllBooks", () => {
 
     const books = await Book.getAllBooks();
 
-    expect(sql.connect).toHaveBeenCalledWith(expect.any(Object));
+    expect(sql.connect).toHaveBeenCalledWith(dbConfig);
     expect(mockConnection.close).toHaveBeenCalledTimes(1);
     expect(books).toHaveLength(2);
     expect(books[0]).toBeInstanceOf(Book);
@@ -69,13 +70,11 @@ describe("Book.updateBookAvailability", () => {
     const newAvailability = "N";
     const mockUpdatedBook = {
       book_id: 1,
-      title: "The Lord of the Rings",
-      author: "J.R.R. Tolkien",
       availability: newAvailability,
     };
 
     const mockRequest = {
-      query: jest.fn().mockResolvedValue({ recordset: [mockUpdatedBook] }),
+      query: jest.fn().mockResolvedValue({ rowsAffected: [1] }),
       input: jest.fn().mockReturnThis(),
     };
     const mockConnection = {
@@ -87,7 +86,7 @@ describe("Book.updateBookAvailability", () => {
 
     const updatedBook = await Book.updateAvailability(bookId, newAvailability);
 
-    expect(sql.connect).toHaveBeenCalledWith(expect.any(Object));
+    expect(sql.connect).toHaveBeenCalledWith(dbConfig);
     expect(mockRequest.input).toHaveBeenCalledWith("id", bookId);
     expect(mockRequest.input).toHaveBeenCalledWith("availability", newAvailability);
     expect(mockRequest.query).toHaveBeenCalledWith(
@@ -104,7 +103,7 @@ describe("Book.updateBookAvailability", () => {
     const newAvailability = "N";
 
     const mockRequest = {
-      query: jest.fn().mockResolvedValue({ recordset: [] }),
+      query: jest.fn().mockResolvedValue({ rowsAffected: [0] }),
       input: jest.fn().mockReturnThis(),
     };
     const mockConnection = {
@@ -116,7 +115,7 @@ describe("Book.updateBookAvailability", () => {
 
     const updatedBook = await Book.updateAvailability(bookId, newAvailability);
 
-    expect(sql.connect).toHaveBeenCalledWith(expect.any(Object));
+    expect(sql.connect).toHaveBeenCalledWith(dbConfig);
     expect(mockRequest.input).toHaveBeenCalledWith("id", bookId);
     expect(mockRequest.input).toHaveBeenCalledWith("availability", newAvailability);
     expect(mockRequest.query).toHaveBeenCalledWith(
@@ -146,7 +145,7 @@ describe("Book.updateBookAvailability", () => {
       errorMessage
     );
 
-    expect(sql.connect).toHaveBeenCalledWith(expect.any(Object));
+    expect(sql.connect).toHaveBeenCalledWith(dbConfig);
     expect(mockRequest.input).toHaveBeenCalledWith("id", bookId);
     expect(mockRequest.input).toHaveBeenCalledWith("availability", newAvailability);
     expect(mockRequest.query).toHaveBeenCalledWith(

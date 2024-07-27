@@ -113,10 +113,10 @@ class Book {
   }
 
   static async updateAvailability(bookId, newAvailability) {
-    const pool = await sql.connect(/* your connection config */);
-    const request = pool.request();
-    
+    let connection;
     try {
+      connection = await sql.connect(dbConfig);  // Ensure dbConfig is used here
+      const request = connection.request();
       request.input("id", bookId);
       request.input("availability", newAvailability);
       const result = await request.query(
@@ -129,15 +129,15 @@ class Book {
       }
 
       // Return the updated book object
-      return new Book({ book_id: bookId, availability: newAvailability });
+      return new Book(bookId, null, null, newAvailability);
     } catch (error) {
-      throw error; // Handle error appropriately
+      throw new Error('Database Error');
     } finally {
-      await pool.close(); // Ensure the connection is closed here
+      if (connection) {
+        await connection.close(); // Ensure the connection is closed here
+      }
     }
   }
 }
-
-
 
 module.exports = Book;

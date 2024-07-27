@@ -3,7 +3,7 @@
   "info": {
     "title": "BED2024Apr_P03_Team03 API",
     "description": "API documentation for BED2024Apr_P03_Team03 assignment",
-    "version": "1.0.2"
+    "version": "1.0.3"
   },
   "host": "localhost:3000",
   "basePath": "/",
@@ -491,18 +491,34 @@
         }
       }
     },
-    "/donations": {
+    "/allDonations": {
       "get": {
-        "description": "Get all donations (excel api)",
+        "description": "Get all donations as a staff",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string",
+            "required": true
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           },
           "500": {
             "description": "Internal Server Error"
           }
         }
-      },
+      }
+    },
+    "/donations": {
       "post": {
         "description": "Create a new donation",
         "parameters": [
@@ -635,7 +651,7 @@
     },
     "/donations/recurring": {
       "post": {
-        "description": "Create or update recurring donation",
+        "description": "Create or update (existing) a recurring donation",
         "parameters": [
           {
             "name": "Authorization",
@@ -866,13 +882,6 @@
           }
         }
       }
-    }
-  },
-  "securityDefinitions": {
-    "Bearer": {
-      "type": "apiKey",
-      "name": "Authorization",
-      "in": "header"
     }
   }
 }

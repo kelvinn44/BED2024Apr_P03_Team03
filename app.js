@@ -77,7 +77,7 @@ app.post("/donations", validateDonation, authenticateAccount, donationController
 //route to get donations by account id - Anne Marie's function:
 app.get("/donations/:id", authenticateAccount, donationController.getDonationsByAccountId);
 
-//route to get a recurring donation - Anne Marie's function:
+//route to get a recurring donation by account id - Anne Marie's function:
 app.get("/donations/recurring/:id", authenticateAccount, donationController.getRecurringDonation);
 
 //route to post and update (existing) a recurring donation - Anne Marie's function:
